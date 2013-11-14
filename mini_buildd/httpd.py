@@ -168,6 +168,9 @@ def run(bind, wsgi_app):
     debug = "http" in mini_buildd.setup.DEBUG
     cherrypy.config.update({"server.socket_host": str(mini_buildd.misc.HoPo(bind).host),
                             "server.socket_port": mini_buildd.misc.HoPo(bind).port,
+#                            'server.ssl_module': 'pyopenssl',
+                            'server.ssl_certificate': '/etc/ssl/certs/ssl-cert-snakeoil.pem',
+                            'server.ssl_private_key': '/etc/ssl/private/ssl-cert-snakeoil.key',
                             "engine.autoreload_on": False,
                             "checker.on": debug,
                             "tools.log_headers.on": debug,

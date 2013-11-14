@@ -270,7 +270,7 @@ class Changes(debian.deb822.Changes):
         for _load, remote in sorted(remotes.items()):
             try:
                 self.upload(mini_buildd.misc.HoPo(remote.ftp))
-                self.remote_http_url = "http://{r}".format(r=remote.http)
+                self.remote_http_url = "https://{r}".format(r=remote.http)
                 return
             except Exception as e:
                 mini_buildd.setup.log_exception(LOG, "Uploading to '{h}' failed".format(h=remote.ftp), e, logging.WARNING)

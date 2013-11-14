@@ -175,12 +175,12 @@ class Remote(KeyringKey):
 
     def mbd_get_status(self, update=False):
         if update:
-            url = "http://{h}/mini_buildd/api?command=status&output=python".format(h=self.http)
+            url = "https://{h}/mini_buildd/api?command=status&output=python".format(h=self.http)
             self.mbd_set_pickled_data_pickled(urllib2.urlopen(url, timeout=10).read())
         return self.mbd_get_pickled_data(default=mini_buildd.api.Status({}))
 
     def mbd_prepare(self, request):
-        url = "http://{h}/mini_buildd/api?command=getkey&output=plain".format(h=self.http)
+        url = "https://{h}/mini_buildd/api?command=getkey&output=plain".format(h=self.http)
         MsgLog(LOG, request).info("Downloading '{u}'...".format(u=url))
 
         # We prepare the GPG data from downloaded key data, so key_id _must_ be empty (see super(mbd_prepare))

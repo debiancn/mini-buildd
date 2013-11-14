@@ -755,7 +755,7 @@ Save password for '{k}': (Y)es, (N)o, (A)lways, Ne(v)er? """.format(c=self, k=ke
 
 
 def web_login(host, user, credentials,
-              proto="http",
+              proto="https",
               login_loc="/accounts/login/",
               next_loc="/mini_buildd/"):
     plain_url = "{p}://{h}".format(p=proto, h=host)

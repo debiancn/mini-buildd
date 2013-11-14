@@ -120,7 +120,7 @@
 					{% for r in remotes %}
 						<li>
 							<span class="status {{ r.get_status_display }}" title="{{ r.mbd_get_status_display }}">{{ r }}</span>
-							(<a title="Visit remote" href="http://{{ r.http }}/">Visit</a>)
+							(<a title="Visit remote" href="https://{{ r.http }}/">Visit</a>)
 						</li>
 					{% empty %}
 						<li>No remotes.</li>

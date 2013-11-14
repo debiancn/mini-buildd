@@ -151,7 +151,7 @@ class Status(Command):
         self.building = ["{0}".format(b) for b in daemon.builds.values()]
 
         self._plain_result = """\
-http://{h} ({v}):
+https://{h} ({v}):
 
 Daemon: {ds}: ftp://{f} (load {l})
 
