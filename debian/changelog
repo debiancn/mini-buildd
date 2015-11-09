@@ -1,3 +1,16 @@
+mini-buildd (1.0.8~bpo8+1) jessie-backports; urgency=medium
+
+  * [fb078b9] Revert "Depend on ‘python-daemon’ 2.0.5 for new lockfile
+    API."
+  * [2cc82b2] Revert "Remove references to obsolete
+    ‘daemon.pidlockfile’ API."
+  * [b9025c7] control: For systems <= jessie: Depend on python-daemon < 2
+    and python-lockfile (<= 1:0.9~) (incompatible API changes).
+  * [d3a70ea] debian/gbp.conf: Point to 1.0.x-jessie.
+  * [548c6eb] changelog: Prepare 1.0.7~bpo8+1.
+
+ -- Stephan Sürken <absurd@debian.org>  Mon, 09 Nov 2015 17:06:30 +0100
+
 mini-buildd (1.0.8) unstable; urgency=medium
 
   * [8ecb4f1] API/DOC: Add "auth level" info to API docstrings.
