@@ -167,25 +167,27 @@ FAQ
 ===
 .. todo:: **FAQ**: *aptitude GUI does not show distribution or origin of packages*
 
-	 To show the distribution of packages, just add ``%t`` to the
-	 package display format [#debbug484011]_::
+	 To show the **distribution** of packages, just add ``%t`` to
+	 the package display format [#debbug484011]_. For example, I
+	 do prefer this setting for the *Package-Display-Format*::
 
-		 aptitude::UI::Package-Display-Format "%c%a%M%S %p %t %Z %v %V";
+		 aptitude::UI::Package-Display-Format "%c%a%M%S %p %t %i %Z %v# %V#";
 
 	 The origin cannot be shown in the package display format
-	 [#debbug248561]_. However, you may change the "default grouping" to
-	 categorize with "origin". I prefer this::
+	 [#debbug248561]_. However, you may change the grouping to
+	 categorize with "origin". For example, I do prefer this
+	 setting for the *Default-Grouping*::
 
 		 aptitude::UI::Default-Grouping "task,status,pattern(~S~i~O, ?true ||),pattern(~S~i~A, ?true ||),section(subdirs,passthrough),section(topdir)";
 
-	 setting which will group installed packages in "Origin/Archive"
+	 This will group installed packages into an *Origin->Archive*
 	 hierarchy.
 
 	 Additionally to aptitude's default "Obsolete and locally
-	 installed" top level category (which only shows packages not in
-	 any apt archive), this grouping also conveniently shows
-	 installed package _versions_ which are not currently in any
-	 repository (check "Installed Packages/now").
+	 installed" top level category (which only shows packages not
+	 in any apt archive), this grouping also more conveniently
+	 shows installed package _versions_ which are not currently in
+	 any repository (check "Installed Packages/now").
 
 .. todo:: **BUG**: *apt secure problems after initial (unauthorized) install of the archive-key package*
 

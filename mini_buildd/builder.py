@@ -182,6 +182,7 @@ $apt_allow_unauthenticated = {apt_allow_unauthenticated};
                        "--chroot-setup-command=apt-key add {p}/apt_keys".format(p=self._build_dir),
                        "--chroot-setup-command=apt-get --option=Acquire::Languages=none update",
                        "--chroot-setup-command={p}/chroot_setup_script".format(p=self._build_dir),
+                       "--chroot-setup-command=cat {p}/chroot_setup_script".format(p=self._build_dir),
                        "--chroot-setup-command=rm -v -f /etc/sudoers",
                        "--chroot-setup-command=touch /etc/sudoers",
                        "--chroot-setup-command=apt-cache policy",

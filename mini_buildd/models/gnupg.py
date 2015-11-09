@@ -173,8 +173,11 @@ class Remote(KeyringKey):
 
     def mbd_get_status(self, update=False):
         if update:
-            url = "http://{h}/mini_buildd/api?command=status&output=python".format(h=self.http)
-            self.mbd_set_pickled_data_pickled(urllib2.urlopen(url, timeout=10).read())
+            try:
+                url = "http://{h}/mini_buildd/api?command=status&output=python".format(h=self.http)
+                self.mbd_set_pickled_data_pickled(urllib2.urlopen(url, timeout=10).read())
+            except Exception as e:
+                raise Exception("Failed to update status for remote via URL '{u}': {e}".format(u=url, e=e))
         return self.mbd_get_pickled_data(default=mini_buildd.api.Status({}))
 
     def mbd_prepare(self, request):

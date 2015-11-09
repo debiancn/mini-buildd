@@ -62,8 +62,11 @@ Use the 'directory' notation with exactly one trailing slash (like 'http://examp
         @classmethod
         def mbd_meta_add_debian(cls, msglog):
             "Add internet Debian archive sources."
-            for url in ["http://ftp.debian.org/debian/",                  # Debian releases
+            for url in ["http://httpredir.debian.org/debian/",            # Debian releases
+                        "http://ftp.debian.org/debian/",                  # Debian releases
+                        "http://httpredir.debian.org/debian-backports/",  # Debian backports, <= squeeze
                         "http://backports.debian.org/debian-backports/",  # Debian backports, <= squeeze
+                        "http://httpredir.debian.org/debian-archive/",    # Archived Debian releases
                         "http://archive.debian.org/debian/",              # Archived Debian releases
                         "http://archive.debian.org/backports.org/",       # Archived (sarge, etch, lenny) backports
                         ]:
@@ -351,6 +354,11 @@ codeversion is only used for base sources.""")
             cls._mbd_get_or_create(msglog, "Ubuntu", "vivid-backports",
                                    ["40976EAF437D05B5", "3B4FE6ACC0B21F32"],
                                    "Codename: vivid\nSuite: vivid-backports")
+            cls._mbd_get_or_create(msglog, "Ubuntu", "wily",
+                                   ["40976EAF437D05B5", "3B4FE6ACC0B21F32"])
+            cls._mbd_get_or_create(msglog, "Ubuntu", "wily-backports",
+                                   ["40976EAF437D05B5", "3B4FE6ACC0B21F32"],
+                                   "Codename: wily\nSuite: wily-backports")
 
         @classmethod
         def mbd_filter_active_base_sources(cls):

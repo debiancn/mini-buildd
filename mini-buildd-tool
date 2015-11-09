@@ -146,7 +146,7 @@ def cmd_call(args):
 SUBPARSERS = PARSER.add_subparsers(title="API commands")
 for cmd, cmd_cls in mini_buildd.api.COMMANDS:
     if cmd != mini_buildd.api.COMMAND_GROUP:
-        cmd_parser = SUBPARSERS.add_parser(cmd, help=cmd_cls.__doc__)
+        cmd_parser = SUBPARSERS.add_parser(cmd, help=cmd_cls.docstring())
         for cmd_args, cmd_kvargs in cmd_cls.ARGUMENTS:
             cmd_parser.add_argument(*cmd_args, **cmd_kvargs)
 

@@ -89,7 +89,11 @@ different components), or just as safeguard
 
     @classmethod
     def docstring(cls):
-        return cls.__doc__
+        auth_strings = {cls.NONE: "anonymous",
+                        cls.LOGIN: "any user login",
+                        cls.STAFF: "staff user login",
+                        cls.ADMIN: "super user login"}
+        return "{doc}\n\n[auth level {auth_level}: {auth_string}]".format(doc=cls.__doc__, auth_level=cls.AUTH, auth_string=auth_strings[cls.AUTH])
 
     def has_flag(self, flag):
         return self.args.get(flag, "False") == "True"

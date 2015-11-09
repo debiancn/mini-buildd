@@ -256,6 +256,16 @@ mini-buildd mini-buildd/options string --verbose --verbose --debug=exception,htt
 EOF
 	sudo debi
 
+	if sudo ischroot && [ -d /run/systemd/system ]; then
+		# Seems we are in a chroot, and host is running systemd
+		# The service will not be started in that case
+		# For now, we really want to start the service anyway, so this is still usable in "traditional" chroots
+		# (Rather use a container-based environment to test)
+		sudo mv /lib/lsb/init-functions.d/40-systemd /lib/lsb/init-functions.d/40-systemd.DISABLED
+		sudo /etc/init.d/mini-buildd restart
+		sudo mv /lib/lsb/init-functions.d/40-systemd.DISABLED /lib/lsb/init-functions.d/40-systemd
+	fi
+
 	if [ "${1}" != "nocheck" ]; then
 		_head "Checking basic mini-buildd-tool calls"
 		local mbd="/usr/bin/mini-buildd-tool localhost:8066"

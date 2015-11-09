@@ -1,3 +1,19 @@
+mini-buildd (1.0.8) unstable; urgency=medium
+
+  * [8ecb4f1] API/DOC: Add "auth level" info to API docstrings.
+  * [ae3a5fe] doc/user.rst: Update aptitude config recommendations.
+  * [0f8e943] [devel] Add dirty workaround so testing still works in
+    "systemd chroots".
+  * [85fe189] [wizards] Add 'httpredir' Debian archive sources.
+  * [98b1181] builder: Also cat "chroot_setup_scrip" to build log. Thanks
+    to Marc Haber (Closes: 797589)
+  * [7a65be1] remotes: Use a custom exception for status updates failures
+    (improves error handling over pure urllib2 exception). Thanks to Marc
+    Haber (Closes: 796348)
+  * [7822017] [wizards] Add Ubuntu 15.10 (wily).
+
+ -- Stephan Sürken <absurd@debian.org>  Sat, 31 Oct 2015 11:40:58 +0000
+
 mini-buildd (1.0.7~bpo8+1) jessie-backports; urgency=medium
 
   * [fb078b9] Revert "Depend on ‘python-daemon’ 2.0.5 for new lockfile
