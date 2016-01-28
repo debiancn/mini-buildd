@@ -334,21 +334,22 @@ You can chose amongst a number of schroot backends; to be able
 to be supported by mini-buildd, the backend must support
 *snapshots* (compare ``man 5 schroot.conf``).
 
-At the time (Feb 2013) of this writing, mini-buildd supports
+At the time (Jan 2015) of this writing, mini-buildd supports
 these backends:
 
-============ ========================= ================ ======== ======== ========================================================= ===============
-Type         Options                   Build size limit Speed    Extra fs Extra dependencies
-============ ========================= ================ ======== ======== ========================================================= ===============
-Dir          aufs[,overlayfs,unionfs]  No               Medium   No       Kernel support (aufs, in Debian standard kernel)          **Recommended**
-File         compression               No               Low      No       No
-LVM          loop,given LVM setup      Yes              Fast     Yes      LVM tools, Kernel support (dm, in Debian standard kernel)
-============ ========================= ================ ======== ======== ========================================================= ===============
+============ ========================================= ================ ======== ======== ========================================================= ===============
+Type         Options                                   Build size limit Speed    Extra fs Extra dependencies
+============ ========================================= ================ ======== ======== ========================================================= ===============
+Dir          **aufs**, overlayfs, unionfs, **overlay** No               Medium   No       Kernel support (aufs <= jessie, overlay >= stretch)       **Recommended**
+File         compression                               No               Low      No       No
+LVM          loop, given LVM setup                     Yes              Fast     Yes      LVM tools, Kernel support (dm, in Debian standard kernel)
+============ ========================================= ================ ======== ======== ========================================================= ===============
 
-In short, we **recommend directory based chroots via aufs**,
-using a the Debian Linux kernel >= 3.2.35 (for current aufs
-support) as best compromise. It offers acceptable speed, and no
-limits.
+In short, we **recommend directory based chroots via aufs**
+using ``3.2.35 =< Debian Linux Kernel < 3.18`` (jessie-) and
+**recommend directory based chroots via overlay** with ``kernels
+> 3.18`` (stretch+) as best compromise. It offers acceptable
+speed, and no limits.
 
 **File chroots** are also fine, they will just always work; you
 may think about configuring schroot to use a tmpfs for its

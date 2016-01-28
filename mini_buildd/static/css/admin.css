@@ -135,43 +135,44 @@
 	width: 100%;
 }
 
-.Prepare {
+/* For 'admin colorized button hack'; see JS hack mini_buildd/templates/admin/mini_buildd/change_list.html */
+#mbd_action_prepare.button.Prepare {
 	border-color: yellow;
 	border-width: 3px;
 	font-weight: bold;
 }
 
-.Check {
+#mbd_action_check.button.Check {
 	border-color: blue;
 	border-width: 3px;
 	font-weight: bold;
 }
 
-.PC {
+#mbd_action_pc.button.PC {
 	border-color: darkblue;
 	border-width: 3px;
 	font-weight: bold;
 }
 
-.Activate {
+#mbd_action_activate.button.Activate {
 	border-color: green;
 	border-width: 3px;
 	font-weight: bold;
 }
 
-.PCA {
+#mbd_action_pca.button.PCA {
 	border-color: darkgreen;
 	border-width: 3px;
 	font-weight: bold;
 }
 
-.Deactivate {
+#mbd_action_deactivate.button.Deactivate {
 	border-color: yellow;
 	border-width: 3px;
 	font-weight: bold;
 }
 
-.Remove {
+#mbd_action_remove.button.Remove {
 	border-color: red;
 	border-width: 3px;
 	font-weight: bold;

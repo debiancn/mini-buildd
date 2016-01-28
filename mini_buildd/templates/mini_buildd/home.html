@@ -2,7 +2,7 @@
 {% load base %}
 
 {% block title %}mini-buildd{% endblock %}
-{% block page_title %}{{ daemon.model.identity }}{% endblock %}
+{% block page_title %}{% mbd_title %}{% endblock %}
 {% block page_sub_title %}
 	{% if not daemon.is_busy %}
 		{% if daemon.is_running %}

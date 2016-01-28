@@ -13,3 +13,5 @@
 /debian/*mini-buildd*.debhelper.log
 /debian/*mini-buildd*.substvars
 /debian/files
+/debian/.debhelper
+/debian/debhelper-build-stamp

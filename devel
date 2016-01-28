@@ -125,9 +125,9 @@ mbd_pydoctests()
 {
 	(
 		pyenv
-		# Workaround: Don't run doctests on any django model modules, and root_urls.py:
-		#  - These will always fail with django 1.7; there are not doctests there anyway yet
-		for m in mini-buildd mini-buildd-tool $(find mini_buildd/ -maxdepth 1 -name "*.py" -not -name "root_urls.py"); do
+		# Workaround django 1.7: Don't run doctests on any django model modules, and root_urls.py (these will now always fail)
+		# Workaround django 1.9: Don't run doctests for more modules that *import* django model modules (these will now always fail, too)
+		for m in mini-buildd mini-buildd-tool $(find mini_buildd/ -maxdepth 1 -name "*.py" -not -name "root_urls.py" -not -name "changes.py" -not -name "urls.py" -not -name "views.py" -not -name "daemon.py" -not -name "builder.py"); do
 			printf "=> Doctest on %s\n" "${m}"
 			python -m doctest -v ${m}
 		done
@@ -216,16 +216,32 @@ mbd_doc()
 	python setup.py build_sphinx --source-dir=build/sphinx
 }
 
+mbd_service()
+{
+	if sudo ischroot && [ -d /run/systemd/system ]; then
+		# Seems we are in a chroot, and host is running systemd
+		# The service will not be started in that case
+		# For now, we really want to start the service anyway, so this is still usable in "traditional" chroots
+		# (Rather use a container-based environment to test)
+		sudo mv /lib/lsb/init-functions.d/40-systemd /lib/lsb/init-functions.d/40-systemd.DISABLED || true
+		sudo /etc/init.d/mini-buildd ${1}
+		sudo mv /lib/lsb/init-functions.d/40-systemd.DISABLED /lib/lsb/init-functions.d/40-systemd || true
+	else
+		service mini-buildd "${1}"
+	fi
+}
+
 mbd_purge()
 {
 	_head "Purging all mini-buildd packages"
+	mbd_service stop || true
 	sudo dpkg --purge mini-buildd python-mini-buildd mini-buildd-common
 
 	# Also test mini-buildd's internal sbuild key workaround
 	sudo rm -v -f /var/lib/sbuild/apt-keys/*
 }
 
-mbd_update()
+mbd_install()
 {
 	if [ "${1}" = "nocheck" ]; then
 		export DEB_BUILD_OPTIONS+=" nocheck"
@@ -255,16 +271,13 @@ mini-buildd mini-buildd/admin_password password admin
 mini-buildd mini-buildd/options string --verbose --verbose --debug=exception,http,webapp
 EOF
 	sudo debi
+}
 
-	if sudo ischroot && [ -d /run/systemd/system ]; then
-		# Seems we are in a chroot, and host is running systemd
-		# The service will not be started in that case
-		# For now, we really want to start the service anyway, so this is still usable in "traditional" chroots
-		# (Rather use a container-based environment to test)
-		sudo mv /lib/lsb/init-functions.d/40-systemd /lib/lsb/init-functions.d/40-systemd.DISABLED
-		sudo /etc/init.d/mini-buildd restart
-		sudo mv /lib/lsb/init-functions.d/40-systemd.DISABLED /lib/lsb/init-functions.d/40-systemd
-	fi
+mbd_update()
+{
+	mbd_install "${@}"
+
+	mbd_service restart
 
 	if [ "${1}" != "nocheck" ]; then
 		_head "Checking basic mini-buildd-tool calls"
@@ -292,6 +305,36 @@ mbd_all()
 mbd_doc()
 {
 	python setup.py build_sphinx --source-dir=build/sphinx
+}
+
+mbd_installdjango()
+{
+	dpkg -s python-django | grep "^Version" || true
+	sudo dpkg --install ../django-versions/python-django*${1}*.deb
+	dpkg -s python-django | grep "^Version"
+}
+
+mbd_testdjango()
+{
+	local version="${1}"
+	[ -n "${version}" ]
+	# Note: Downgrading django versions does not work with migrate, so we need to purge 1st
+	sudo dpkg --purge mini-buildd
+
+	# Note: Shutting down mini-buildd may not have happened (chroot)
+	sleep 1.0
+	if sudo pkill --full /usr/sbin/mini-buildd; then
+		sleep 5
+		sudo pkill --signal=9 --full /usr/sbin/mini-buildd || true
+	fi
+
+	mbd_installdjango "${1}"
+	./devel update_nocheck
+	# Note: Calling stop to soon will not necessarily see the pid ("bug" in init script), so sleep a bit
+	sleep 2
+	mbd_service stop
+	# Note: Only running in foreground mode with resp. --debug will actually show the warnings of django and cherrypy atm
+	sudo su - mini-buildd --command="/usr/sbin/mini-buildd --foreground --verbose --verbose --debug=httpd,webapp"
 }
 
 sep=" "

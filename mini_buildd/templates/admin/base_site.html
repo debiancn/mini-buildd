@@ -2,7 +2,7 @@
 {% load i18n %}
 {% load base %}
 
-{% block title %}{{ title }} | {% trans 'Configuration of mini-buildd' %}{% endblock %}
+{% block title %}{{ title }} | {% trans 'Configuration of mini-buildd' %}: {% mbd_title %}{% endblock %}
 
 {% block extrahead %}
 	<link rel="shortcut icon" href="/static/favicon.ico" />
@@ -12,7 +12,7 @@
 {% block branding %}
 	<div id="mbd_django_admin_branding">
 		<a title="mini-buildd Home" href="/"><img src="/static/img/icon_48x48.png" alt="mini-buildd logo" /></a>
-		<h1>{% trans 'Configuration of mini-buildd' %}</h1>
+		<h1>{% trans 'Configuration of mini-buildd' %}: {% mbd_title %}</h1>
 	</div>
 
 	<div id="mbd_django_admin_daemon_status">

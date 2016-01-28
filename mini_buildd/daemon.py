@@ -527,6 +527,10 @@ class Daemon(object):
         status.run(self)
         return status
 
+    def get_title(self):
+        "Human-readable short title for this Daemon instance."
+        return "{id}@{hn}".format(id=self.model.identity, hn=self.model.hostname)
+
     @classmethod
     def meta(cls, model, func, msglog):
         # pylint: disable=W0123

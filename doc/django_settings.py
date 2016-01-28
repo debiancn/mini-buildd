@@ -11,6 +11,7 @@ INSTALLED_APPS = (
     "django_extensions",
     "django.contrib.auth",
     "django.contrib.contenttypes",
+    "registration",
     "mini_buildd")
 
 SECRET_KEY = "doc has no key. doc needs no key."

@@ -1,15 +1,59 @@
-mini-buildd (1.0.8~bpo8+1) jessie-backports; urgency=medium
+mini-buildd (1.0.10) unstable; urgency=medium
 
-  * [fb078b9] Revert "Depend on ‘python-daemon’ 2.0.5 for new lockfile
-    API."
-  * [2cc82b2] Revert "Remove references to obsolete
-    ‘daemon.pidlockfile’ API."
-  * [b9025c7] control: For systems <= jessie: Depend on python-daemon < 2
-    and python-lockfile (<= 1:0.9~) (incompatible API changes).
-  * [d3a70ea] debian/gbp.conf: Point to 1.0.x-jessie.
-  * [548c6eb] changelog: Prepare 1.0.7~bpo8+1.
+  * [6345fe9] .gitignore: Ignore paths created by new debhelper.
+  * [2231178] [devel]: Updates: +installdjango, +service, +install.
+  * [26d9291] [django] Retry 'migrate' with '--fake-initial' on
+    OperationalError (fixes daemon start on certain existing databases).
+  * [938bc1d] Update to new recommended bash completions path (/usr/share
+    /bash-completion/completions/).
 
- -- Stephan Sürken <absurd@debian.org>  Mon, 09 Nov 2015 17:06:30 +0100
+ -- Stephan Sürken <absurd@debian.org>  Wed, 20 Jan 2016 14:36:49 +0000
+
+mini-buildd (1.0.9) unstable; urgency=medium
+
+  * [eb0fad7] [devel] chroot workaround: Don't care if the dirty workound
+    fails.
+  * [13ced1b] django_settings: Improve django < 1.7 compat code (make
+    mini-buildd actually fail when django.setup() fails).
+  * [dff0527] [devel] purge: Also manually stop daemon.
+  * [aaa608c] postrm: On purge, don't hide output of 'userdel'.
+  * [543d101] web && admin: Also display the daemon's hostname. Thanks to
+    Marc Haber (Closes: 796346)
+  * [f69c12b] httpd.py: Fix compat warning from cherrypy 2.3
+    (autoreload_on -> .on).
+  * [e79279c] control: Update dependency on django to >= 1.7 (will not be
+    tested under 1.5/1.6, and compat code may eventually be removed).
+  * [332996d] [devel]: Add crude macro to help locally test different
+    django versions.
+  * [7842e91] [django 1.9] Use management call 'migrate', not 'syncdb'.
+  * [235ac3b] DirChroot: Add support for now-in-linux-mainline overlayfs
+    named "overlay" (Fixes: OOB support for overlay backend for Debian
+    Kernels with aufs removed).
+  * [9b67282] [django 1.9] Add run_syncdb=True to migrate call.
+  * [cc2ea99] [django 1.9] Add app "django.contrib.sites" (p-d-r imports
+    models from there, forbidden in 1.9 w/o the app installed).
+  * [1c41bda] [django 1.8] WebApp: Manually call check() once (1.8 no
+    longer does this by default; in 1.7 you may see unharmful duplicate
+    calls).
+  * [1b5d6e8] [django 1.9] Update templatetag 'mbd_model_count' to
+    (cleaner) inclusion.tag (Fixes: configuration page).
+  * [fd94acc] [django 1.9] ./devel pydoctests: Add more exclusions for now
+    always-failing doctest runs.
+  * [2b8f5f5] [devel]: Add yet another workaround to simplify testing.
+  * [5dd2d45] Revert "[django 1.9] Add app "django.contrib.sites" (p-d-r
+    imports models from there, forbidden in 1.9 w/o the app installed).":
+    Not needed any more for new p-d-r upstream 2.0.4.
+  * [ed878cf] [django 1.8|9]: Depend on python-django-registration >=
+    2.0.4.
+  * [cd6b460] control: Harden python-django deps to those main version
+    actually tested with (1.7, 1.8, 1.9). (Closes: 808670, 806361, 806593)
+  * [cd6edec] [django 1.9] doc: Add app "registration" to django pseudo
+    conf (avoids warning on sphinx run).
+  * [542cb3c] [devel] More internal convenience hacks for testdjango.
+  * [599829b] DirChroot: Make "overlay" backend default (it's now in
+    mainline and current Debian kernels, while "aufs" has been removed).
+
+ -- Stephan Sürken <absurd@olurdix.de>  Tue, 12 Jan 2016 11:27:55 +0000
 
 mini-buildd (1.0.8) unstable; urgency=medium
 

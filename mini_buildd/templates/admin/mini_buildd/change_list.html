@@ -1,10 +1,11 @@
+<!-- 'admin colorized (Prepare, Check,...) button JS hack'; corresponding css values in admin.css. -->
 {% extends "admin/change_list.html" %}
 
 {% block extrahead %}
 {{ block.super }}
 {{ media.js }}
 {% if action_form %}{% if actions_on_top or actions_on_bottom %}
-<!-- Snippet from http://djangosnippets.org/snippets/2630/ -->
+<!-- Snippet initially from http://djangosnippets.org/snippets/2630/ -->
 <script type="text/javascript">
 
 (function ($) {
@@ -24,6 +25,7 @@
                 $('<button>')
                     .appendTo(buttons)
                     .attr('name', this.value)
+                    .attr('id', this.value)
                     .addClass('button ' + this.text)
                     .text(this.text)
                     .click(function () {

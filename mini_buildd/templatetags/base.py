@@ -25,39 +25,27 @@ def mbd_version():
     return mini_buildd.__version__
 
 
+@register.simple_tag
+def mbd_title():
+    return mini_buildd.daemon.get().get_title()
+
+
 @register.filter
 def mbd_daemon_is_running(dummy):
     return mini_buildd.daemon.get().is_running()
 
 
-@register.simple_tag
+@register.inclusion_tag("includes/mbd_model_count.html")
 def mbd_model_count(model):
-    def count_str(count):
-        if count:
-            return "&nbsp;{d}&nbsp;".format(d=count)
-        return ""
-
-    try:
-        # pylint: disable=W0123
-        model_class = eval("mini_buildd.models.{m}".format(m=model))
-        is_status_model = getattr(model_class, "mbd_is_prepared", None)
-        total = model_class.objects.all().count()
-        if is_status_model:
-            active = model_class.objects.filter(status__exact=model_class.STATUS_ACTIVE).count()
-            prepared = model_class.objects.filter(status__exact=model_class.STATUS_PREPARED).count()
-            removed = model_class.objects.filter(status__exact=model_class.STATUS_REMOVED).count()
-
-            return """\
-<span title="Active instances"   style="background-color: green; color: white;">{active}</span>\
-<span title="Prepared instances" style="background-color: yellow; color: black;">{prepared}</span>\
-<span title="Removed instances" style="background-color: red; color: black;">{removed}</span>\
-""".format(active=count_str(active),
-           prepared=count_str(prepared),
-           removed=count_str(removed))
-        else:
-            return """<span title="Total instances" style="color: black;">{total}</span>""".format(total=count_str(total))
-    except:
-        return "no model count"
+    ret = {}
+    model_class = eval("mini_buildd.models.{m}".format(m=model))
+    if getattr(model_class, "mbd_is_prepared", None):
+        # Status model
+        ret["active"] = model_class.objects.filter(status__exact=model_class.STATUS_ACTIVE).count()
+        ret["prepared"] = model_class.objects.filter(status__exact=model_class.STATUS_PREPARED).count()
+        ret["removed"] = model_class.objects.filter(status__exact=model_class.STATUS_REMOVED).count()
+    ret["total"] = model_class.objects.all().count()
+    return ret
 
 
 def _mbd_e2n(func, *args, **kwargs):

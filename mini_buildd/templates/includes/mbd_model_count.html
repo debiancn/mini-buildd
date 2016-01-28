@@ -1,0 +1,15 @@
+{% if active %}
+	<span title="Active instances" style="background-color: green; color: white;">&nbsp;{{ active }}&nbsp;</span>
+{% endif %}
+
+{% if prepared %}
+	<span title="Prepared instances" style="background-color: yellow; color: black;">&nbsp;{{ prepared }}&nbsp;</span>
+{% endif %}
+
+{% if removed %}
+	<span title="Removed instances" style="background-color: red; color: black;">&nbsp;{{ removed }}&nbsp;</span>
+{% endif %}
+
+{% if total %}
+	<span title="Total instances" style="color: black;">&nbsp;{{ total }}&nbsp;</span>
+{% endif %}

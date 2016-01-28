@@ -9,7 +9,7 @@ case ${1} in
 		. /usr/share/debconf/confmodule
 		db_input critical "mini-buildd/purge_warning" || true
 		db_go || true
-		userdel --force --remove mini-buildd >/dev/null 2>&1 || true
+		userdel --force --remove mini-buildd || true
 		;;
 esac
 
