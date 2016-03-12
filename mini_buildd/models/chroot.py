@@ -57,7 +57,7 @@ go to the default mapping.
         ordering = ["source", "architecture"]
 
     class Admin(mini_buildd.models.base.StatusModel.Admin):
-        search_fields = ["source", "architecture"]
+        search_fields = ["source__codename", "architecture__name"]
         readonly_fields = ["personality"]
         fieldsets = [
             ("Chroot identity", {"fields": (("source", "architecture"), "personality", "personality_override")}),
@@ -104,8 +104,8 @@ chroots (with <tt>qemu-user-static</tt> installed).
                         if s.codename in ["lenny", "etch"]:
                             extra_options = "Debootstrap-Command: /usr/sbin/mbd-debootstrap-uname-2.6\n"
                         chroot_model.mbd_get_or_create(msglog, source=s, architecture=a, extra_options=extra_options)
-                    except:
-                        msglog.info("Another backend already provides {s}/{a}".format(s=s.codename, a=a.name))
+                    except Exception as e:
+                        msglog.warn("{s}/{a}: Skipping customized chroot (on another backend, or not on default values) [{e}]".format(s=s.codename, a=a.name, e=e))
 
     def __unicode__(self):
         return "{o} '{c}:{a}' ({f})".format(o=self.source.origin,

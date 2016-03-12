@@ -511,6 +511,9 @@ def list_get(list_, index, default=None):
 
 
 def mkdirs(path):
+    """
+    .. note:: Needed for python 2.x only. For 3.x, just use 'exist_ok' parameter.
+    """
     try:
         os.makedirs(path)
         LOG.info("Directory created: {d}".format(d=path))

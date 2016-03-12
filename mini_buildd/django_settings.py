@@ -14,6 +14,16 @@ import mini_buildd.models.msglog
 
 LOG = logging.getLogger(__name__)
 
+MBD_INSTALLED_APPS = (
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.admin",
+    "django.contrib.sessions",
+    "django.contrib.admindocs",
+    "django_extensions",
+    "registration",
+    "mini_buildd")
+
 
 class SMTPCreds(object):
     """
@@ -113,15 +123,26 @@ def configure(smtp_string, loglevel):
             "django.contrib.auth.middleware.AuthenticationMiddleware",
             "django.contrib.messages.middleware.MessageMiddleware"),
 
-        INSTALLED_APPS=(
-            "django.contrib.auth",
-            "django.contrib.contenttypes",
-            "django.contrib.admin",
-            "django.contrib.sessions",
-            "django.contrib.admindocs",
-            "django_extensions",
-            "registration",
-            "mini_buildd"))
+        INSTALLED_APPS=MBD_INSTALLED_APPS)
 
     if LooseVersion(django.get_version()) >= LooseVersion("1.7.0"):
         django.setup()
+
+
+def pseudo_configure():
+    """
+    Pseudo-configure django. Use this where you need mini-buildd's model classes, but no actual instance.
+
+    Example: Sphinx doc creation, API clients for unpickling model instances.
+    """
+    django.conf.settings.configure(
+        DATABASES={
+            "default": {
+                "ENGINE": "django.db.backends.sqlite3",
+                "NAME": ":memory:",
+            }
+        },
+        MIDDLEWARE_CLASSES=(),
+        INSTALLED_APPS=MBD_INSTALLED_APPS)
+
+    django.setup()

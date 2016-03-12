@@ -136,7 +136,7 @@ class Uploader(KeyringKey):
     may_upload_to = django.db.models.ManyToManyField("Repository", blank=True)
 
     class Admin(KeyringKey.Admin):
-        search_fields = KeyringKey.Admin.search_fields + ["user"]
+        search_fields = KeyringKey.Admin.search_fields + ["user__username"]
         readonly_fields = KeyringKey.Admin.readonly_fields + ["user"]
         filter_horizontal = ("may_upload_to",)
 

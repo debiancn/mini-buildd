@@ -2,8 +2,10 @@
 from __future__ import unicode_literals
 
 import os
+from distutils.version import LooseVersion
 
 import django
+import django.utils.safestring
 import mini_buildd
 
 
@@ -23,6 +25,14 @@ def mbd_dirname(path):
 @register.simple_tag
 def mbd_version():
     return mini_buildd.__version__
+
+
+@register.simple_tag
+def mbd_jquery_path():
+    if LooseVersion(django.get_version()) >= LooseVersion("1.9.0"):
+        return "/admin/js/vendor/jquery/jquery.js"
+    else:
+        return "/admin/js/jquery.js"
 
 
 @register.simple_tag
@@ -59,7 +69,7 @@ def _mbd_distribution_options(repository, value_prefix="", **suiteoption_filter)
     result = ""
     for d in repository.mbd_distribution_strings(**suiteoption_filter):
         result += '<option value="{p}{d}">{d}</option>'.format(p=value_prefix, d=d)
-    return result
+    return django.utils.safestring.mark_safe(result)
 
 
 @register.simple_tag

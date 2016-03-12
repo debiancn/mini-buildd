@@ -1,0 +1,13 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+from pprint import pprint
+
+from mini_buildd.client_api_10x import Daemon
+
+MBD = Daemon("localhost", "8066")
+
+STATUS = MBD.call("status")
+
+pprint(STATUS)
+pprint(STATUS.repositories)
+pprint(STATUS.chroots)

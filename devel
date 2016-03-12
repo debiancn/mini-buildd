@@ -41,7 +41,6 @@ _check_prog()
 }
 
 PYPATH="$(readlink -f $(dirname $0))"
-DJSETTINGS="doc.django_settings"
 PYLINTRC="${PYPATH}/.pylintrc"
 
 mbd_installdeps()
@@ -65,7 +64,6 @@ mbd_installdeps()
 mbd_pyenv()
 {
 	printf "export PYTHONPATH=\"${PYPATH}\"\n"
-	printf "export DJANGO_SETTINGS_MODULE=\"${DJSETTINGS}\"\n"
 	printf "export PYLINTRC=\"${PYLINTRC}\""
 }
 
@@ -87,7 +85,7 @@ mbd_pep8()
 		# squeeze version does not set an error exit status
 		t=$(mktemp)
 		trap "rm ${t}" EXIT
-		pep8 --ignore=E501,E122 doc/conf.py doc/django_settings.py setup.py mini-buildd mini-buildd-tool mini_buildd/ | tee "${t}"
+		pep8 --ignore=E501,E122 doc/conf.py setup.py mini-buildd mini-buildd-tool mini_buildd/ | tee "${t}"
 		[ ! -s "${t}" ]
 	)
 }

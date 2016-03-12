@@ -26,9 +26,9 @@ and will also appear in the apt repository in the ``Origin``
 field.
 
 Second, each instance instance may have ``N`` **repositories**,
-which each have their own **identity** string, which determines
-the actual distribution names (``CODENAME-ID-SUITE``) to be used
-for uploads or in apt lines.
+which each have their own **identity** string, determining the
+actual distribution names (``CODENAME-ID-SUITE``) to be used for
+uploads or in apt lines.
 
 Both identities should be "globally unique" to avoid any
 confusion or conflicts with other existing repositories.
@@ -48,19 +48,19 @@ resembles that of Debian Backports:
 
 .. _user_default_layouts:
 
-==================== ========= =================== ========================= ========================= ============================
-The Default Layout's Suites and Semantics Overview
------------------------------------------------------------------------------------------------------------------------------------
-Suite                Flags     Version restriction Repository                Semantic                  Consumer
-==================== ========= =================== ========================= ========================= ============================
-*experimental*       U E 6R    ``~ID+0``           No auto                   *Use at will*             Developer.
-snapshot             U E 12R   ``~ID+0``           No auto, but upgrades     *Continuous integration*  Developer, beta tester.
-``unstable``         U M 9R    ``~ID+[1-9]``       No auto, but upgrades     *Proposed for live*       Developer, beta tester.
-``testing``          M 3R      ``~ID+[1-9]``       No auto, but upgrades     *QA testing*              Quality Assurance.
-``stable``           6R        ``~ID+[1-9]``       No auto, but upgrades     *Live*                    End customer.
-==================== ========= =================== ========================= ========================= ============================
+==================== ========= =================== ========================= ========================= ============================ =======================
+  The Default Layout's Suites and Semantics Overview
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+Suite                Flags     Version restriction Example(``test/jessie``)  Repository                Semantic                     Consumer
+==================== ========= =================== ========================= ========================= ============================ =======================
+*experimental*       U E 6R    ``~<R><C>+0``       ``~test80+0``             No auto                   *Use at will*                Developer.
+snapshot             U E 12R   ``~<R><C>+0``       ``~test80+0``             No auto, but upgrades     *Continuous integration*     Developer, beta tester.
+``unstable``         U M 9R    ``~<R><C>+[1-9]``   ``~test80+3``             No auto, but upgrades     *Proposed for live*          Developer, beta tester.
+``testing``          M 3R      ``~<R><C>+[1-9]``   ``~test80+2``             No auto, but upgrades     *QA testing*                 Quality Assurance.
+``stable``           6R        ``~<R><C>+[1-9]``   ``~test80+1``             No auto, but upgrades     *Live*                       End customer.
+==================== ========= =================== ========================= ========================= ============================ =======================
 
-``U``: Uploadable ``M``: Migrates ``E``: Experimental ``NR``: keeps N Rollback versions ``ID``: repository IDentity
+``U``: Uploadable ``M``: Migrates ``E``: Experimental ``NR``: keeps N Rollback versions ``<R>``: Repository Identity ``<C>``: Codename version.
 
 .. _user_setup:
 
