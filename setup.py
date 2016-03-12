@@ -56,7 +56,7 @@ distutils.core.setup(
     author="Stephan Sürken",
     author_email="absurd@debian.org",
     scripts=["mini-buildd", "mini-buildd-tool"],
-    packages=["mini_buildd", "mini_buildd/models"],
+    packages=["mini_buildd", "mini_buildd/api", "mini_buildd/models"],
     package_data={"mini_buildd": ["templates/*.html",
                                   "templates/includes/*.html",
                                   "templates/mini_buildd/*.html",
