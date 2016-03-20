@@ -1,0 +1,35 @@
+#!/bin/bash -e
+
+. "${SETUP_DATA_DIR}/common-data"
+. "${SETUP_DATA_DIR}/common-functions"
+. "${SETUP_DATA_DIR}/common-config"
+
+# Skip conditions
+[ "${1}" = "setup-start" ] || exit 0
+[ "${CHROOT_SESSION_SOURCE}" != "true" ] || { printf "I: Not acting on source chroots, skipping...\n"; exit 0; }
+printf "%s" "${CHROOT_NAME}" | grep -q "^mini-buildd" || { printf "I: Not a mini-buildd chroot, skipping...\n"; exit 0; }
+
+# This crude quick fix workaround for
+#
+# https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=728096
+#
+# When using systemd (jessie/sid), you will need this (while the
+# bug is not fixed) to make some (i.e., those who use /run/shm
+# with /dev/shm a symlink to run like wheezy does) distribution
+# chroots work.
+mini_buildd_workarounds_shmbug728096()
+{
+	printf "Workaround for: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=728096\n"
+
+	# Skip conditions
+	[ -d "/run/systemd/system" ] || { printf "I: shmbug728096: Not using systemd (/dev/shm), skipping ...\n"; return 0; }
+	[ "$(/bin/readlink "${CHROOT_PATH}/dev/shm")" = "/run/shm" ] || { printf "I: shmbug728096: Chroot does not/no longer symlink /dev/shm to /run/shm, skipping ...\n"; return 0; }
+
+	# The actual workaround: Just make /dev/shm a directory.
+	printf "W: shmbug728096: Fixing SHM symlink in chroot (systemd?)...\n" >&2
+	rm -v "${CHROOT_PATH}/dev/shm"
+	mkdir -v "${CHROOT_PATH}/dev/shm"
+	mount -v -ttmpfs none "${CHROOT_PATH}/dev/shm"
+}
+
+mini_buildd_workarounds_shmbug728096
