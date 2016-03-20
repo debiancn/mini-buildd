@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from pprint import pprint
 
-from mini_buildd.client_api_10x import Daemon
+from mini_buildd.api.client_1_0 import Daemon
 
 MBD = Daemon("localhost", "8066")
 
