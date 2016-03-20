@@ -32,4 +32,19 @@ mini_buildd_workarounds_shmbug728096()
 	mount -v -ttmpfs none "${CHROOT_PATH}/dev/shm"
 }
 
+# (Some) archived dists have a fixed Valid-Util header.
+#
+# We still want these to work, however.
+#
+mini_buildd_workarounds_archived()
+{
+	case ${CHROOT_NAME} in
+		*-etch-*|*-lenny-*|*-squeeze-*)
+			printf "I: ${CHROOT_NAME}: Archived distribution: Disabling Valid-Until check...\n"
+			printf "Acquire::Check-Valid-Until \"false\";\n" >"${CHROOT_PATH}/etc/apt/apt.conf.d/10disable-check-valid-until"
+			;;
+	esac
+}
+
 mini_buildd_workarounds_shmbug728096
+mini_buildd_workarounds_archived
