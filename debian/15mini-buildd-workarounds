@@ -19,7 +19,7 @@ printf "%s" "${CHROOT_NAME}" | grep -q "^mini-buildd" || { printf "I: Not a mini
 # chroots work.
 mini_buildd_workarounds_shmbug728096()
 {
-	printf "Workaround for: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=728096\n"
+	printf "I: Workaround for: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=728096\n"
 
 	# Skip conditions
 	[ -d "/run/systemd/system" ] || { printf "I: shmbug728096: Not using systemd (/dev/shm), skipping ...\n"; return 0; }

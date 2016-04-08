@@ -10,7 +10,8 @@ import urllib2
 
 import bs4
 
-class DebianPackageTracker():
+
+class DebianPackageTracker(object):
     """Get (some) source package information from the Debian Package
     Tracker. As long as there is no proper API, we do this the
     hacky way parsing the HTML via bs4 - so this will most
@@ -21,7 +22,7 @@ class DebianPackageTracker():
 
         pkg_url = "{b}/pkg/{p}".format(b=tracker_url, p=src_package)
         soup = bs4.BeautifulSoup(urllib2.urlopen(pkg_url).read())
-        version_tags = soup.findAll("span", { "class" : "versions-repository" })
+        version_tags = soup.findAll("span", {"class": "versions-repository"})
         for d in version_tags:
             codename = d['title'].split("(")[1].split(" ")[0].translate({ord(")"): None})
             version = d.find_next_sibling("a").contents[0]
@@ -31,8 +32,8 @@ class DebianPackageTracker():
                                                                                                       p=src_package,
                                                                                                       v=version)}
 
-    def getInfo(self, codename):
+    def get_info(self, codename):
         return self.info[codename]
 
-    def getVersion(self, codename):
+    def get_version(self, codename):
         return self.info[codename]["version"]

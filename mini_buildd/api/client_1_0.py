@@ -3,12 +3,31 @@ from __future__ import unicode_literals
 from __future__ import print_function
 
 import sys
+import time
 import pickle
 import urllib2
 import urlparse
 import re
 
+# mini-buildd API transfers log message via HTTP headers. The default (100) is sometimes too low.
+# pylint: disable=W0212
+import httplib
+httplib._MAXHEADERS = 500
+# pylint: enable=W0212
+
+import debian.debian_support
+
 import mini_buildd.misc
+
+
+def _django_pseudo_configure():
+    import mini_buildd.django_settings
+    import django.core.management
+    import mini_buildd.models
+
+    mini_buildd.django_settings.pseudo_configure()
+    mini_buildd.models.import_all()
+    django.core.management.call_command("migrate", interactive=False, run_syncdb=True, verbosity=0)
 
 
 class Daemon(object):
@@ -19,45 +38,68 @@ class Daemon(object):
         "Stolen from mini-buildd-tool"
         msgs_header = "x-mini-buildd-message"
         for msg in [v for k, v in headers.items() if msgs_header == k[:len(msgs_header)]]:
-            self._log("HTTP Header Message: {m}".format(host=self.host, m=mini_buildd.misc.b642u(msg)))
+            self._log("HTTP Header Message: {m}".format(m=mini_buildd.misc.b642u(msg)))
 
-    def __init__(self, host, port="8066", proto="http"):
+    def __init__(self, host, port="8066", proto="http",
+                 auto_confirm=False,
+                 dry_run=False,
+                 batch_mode=False,
+                 django_mode=True):
         self.host = host
         self.port = port
         self.proto = proto
         self.url = "{proto}://{host}:{port}".format(proto=proto, host=host, port=port)
         self.api_url = "{url}/mini_buildd/api".format(url=self.url)
-        self.auto_confirm = True
+        self.auto_confirm = auto_confirm
+        self.dry_run = dry_run
+        self.batch_mode = batch_mode
+        if django_mode:
+            _django_pseudo_configure()
 
         # Extra: status caching
         self._status = None
         # Extra: dputconf caching (for archive identity workaround)
         self._dputconf = None
 
-    def login(self, user):
+    def login(self, user=None):
         "Login. Use the user's mini-buildd keyring for auth, like mini-buildd-tool."
         keyring = mini_buildd.misc.Keyring("mini-buildd")
-        mini_buildd.misc.web_login("{host}:{port}".format(host=self.host, port=self.port), user, keyring)
+        mini_buildd.misc.web_login("{host}:{port}".format(host=self.host, port=self.port), user if (user or self.batch_mode) else raw_input("Username: "), keyring, proto=self.proto)
+        return self
 
-    def set_auto_confirm(self, confirm=True):
-        self.auto_confirm = confirm
+    def call(self, command, args=None, output="python", raise_on_error=True):
+        if args is None:
+            args = {}
 
-    def call(self, command, args={}, output="python"):
         if self.auto_confirm:
             args["confirm"] = command
         http_get_args = "&".join("{k}={v}".format(k=k, v=v) for k, v in args.items())
         url = "{api_url}?command={command}&output={output}&{args}".format(api_url=self.api_url, command=command, output=output, args=http_get_args)
-        self._log("API call URL: {}".format(url))
 
+        if self.dry_run:
+            self._log("Dry Run, skipping API: {}".format(url))
+            return None
+
+        self._log("Calling API: {}".format(url))
         try:
             response = urllib2.urlopen(url)
-            self._log("HTTP Status: {status}".format(status=response.getcode()))
-            if output == "python":
-                return pickle.loads(response.read())
-            else:
-                return response.read()
+            return pickle.loads(response.read()) if output == "python" else response.read()
         except urllib2.HTTPError as e:
+            self._log("API call failed with HTTP Status {status}:".format(status=e.getcode()))
             self._log_daemon_messages(e.headers)
+            if not self.batch_mode and e.getcode() == 401:
+                action = raw_input("Unauthorized retry: (l)ogin, (c)onfirm this call or (C)onfirm all future calls (anything else to just skip)? ")
+                if action and action in "lcC":
+                    new_args = args
+                    if action == "l":
+                        self.login()
+                    elif action == "c":
+                        new_args["confirm"] = command
+                    elif action == "C":
+                        self.auto_confirm = True
+                    return self.call(command, new_args, output=output, raise_on_error=raise_on_error)
+            if raise_on_error:
+                raise
 
     # Extra functionality
     @property
@@ -67,7 +109,11 @@ class Daemon(object):
         # Workaround: Parse the archive id from dput.cf
         if self._dputconf is None:
             self._dputconf = self.call("getdputconf")
-        return self._dputconf._plain_result.split("\n", 1)[0].rpartition("]")[0].rpartition("-")[2]
+        # 1st line looks like: "[mini-buildd-my-archive-id]"
+        # pylint: disable=W0212
+        dput_target = self._dputconf._plain_result.split("\n", 1)[0].rpartition("]")[0]
+        # pylint: enable=W0212
+        return dput_target[len("mini-buildd-") + 1:]
 
     @property
     def status(self):
@@ -109,7 +155,7 @@ class Daemon(object):
                             repo=repository,
                             package=src_package,
                             version=vers)
-                        # TODO/BUG: Path may also be "/source all/", not "/source/" (on non-source-only uploads?)
+                        # Note: Path may also be "/source all/", not "/source/" (on non-source-only uploads?)
                         info["changes_url"] = "{base_url}/log/{repo}/{package}/{version}/source/{package}_{version}_source.changes".format(
                             base_url=base_url,
                             repo=repository,
@@ -119,7 +165,41 @@ class Daemon(object):
 
         return result
 
-    def _bulk_migrate(self, packages, repositories=None, codenames=None, suites=None):
+    def wait_for_package(self, distribution, src_package, version=None, or_greater=False,
+                         max_tries=-1, sleep=60, initial_sleep=0,
+                         raise_on_error=True):
+
+        item = "\"{p}_{v}\" in \"{d}\"".format(p=src_package, v=version, d=distribution)
+
+        def _sleep(secs):
+            self._log("Waiting for {item}: Idling {s} seconds (Ctrl-C to abort)...".format(item=item, s=secs))
+            time.sleep(secs)
+
+        tries = 0
+        _sleep(initial_sleep)
+        while max_tries < 0 or tries < max_tries:
+            pkg_info = self.get_package_versions(src_package, distribution).get(distribution, {})
+            actual_version = pkg_info.get("version", None)
+            self._log("Actual version for {item}: {v}".format(item=item, v=actual_version))
+
+            if (version is None and actual_version) or \
+               (version is not None and (actual_version == version or or_greater and debian.debian_support.Version(actual_version) >= debian.debian_support.Version(version))):
+                self._log("Match found: {item}.".format(item=item))
+                return pkg_info
+            _sleep(sleep)
+            tries += 1
+
+        not_found_msg = "Could not find {item} within {s} seconds.".format(item=item, s=initial_sleep + tries * sleep)
+        self._log(not_found_msg)
+        if raise_on_error:
+            raise Exception(not_found_msg)
+
+    def has_package(self, distribution, src_package, version=None, or_greater=False):
+        return self.wait_for_package(distribution, src_package, version, or_greater=or_greater,
+                                     max_tries=1, sleep=0, initial_sleep=0,
+                                     raise_on_error=False)
+
+    def bulk_migrate(self, packages, repositories=None, codenames=None, suites=None):
         status = self.call("status")
 
         if repositories is None:
@@ -135,13 +215,4 @@ class Daemon(object):
                 for codename in iter_codenames:
                     for suite in suites:
                         dist = "{c}-{r}-{s}".format(c=codename, r=repository, s=suite)
-                        self.call("migrate", {"package": package, "distribution": dist})
-
-    def django_pseudo_configure(self):
-        import mini_buildd.django_settings
-        import django.core.management
-        import mini_buildd.models
-
-        mini_buildd.django_settings.pseudo_configure()
-        mini_buildd.models.import_all()
-        django.core.management.call_command("migrate", interactive=False, run_syncdb=True, verbosity=0)
+                        self.call("migrate", {"package": package, "distribution": dist}, raise_on_error=False)

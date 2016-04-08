@@ -24,6 +24,8 @@ import getpass
 import logging
 import logging.handlers
 
+import debian.debian_support
+
 # Workaround: Avoid warning 'No handlers could be found for logger "keyring"'
 KEYRING_LOG = logging.getLogger("keyring")
 KEYRING_LOG.addHandler(logging.NullHandler())
@@ -362,6 +364,18 @@ def guess_codeversion(release):
             return digit0 + digit1
     except:
         return release["Codename"].upper()
+
+
+def guess_default_dirchroot_backend(overlay, aufs):
+    try:
+        release = os.uname()[2]
+        # linux 3.18-1~exp1 in Debian removed aufs in favor of overlay
+        if debian.debian_support.Version(release) < debian.debian_support.Version("3.18"):
+            return aufs
+    except:
+        pass
+
+    return overlay
 
 
 def pkg_fmt(status, distribution, package, version, extra=None, message=None):
@@ -758,6 +772,17 @@ Save password for '{k}': (Y)es, (N)o, (A)lways, Ne(v)er? """.format(c=self, k=ke
         return key, user, password, new
 
 
+def canonize_url(url):
+    "Poor man's URL canonizer: Always include the port (currently only works for 'http' and 'https' default ports)."
+    default_scheme2port = {"http": ":80", "https": ":443"}
+
+    parsed = urlparse.urlparse(url)
+    netloc = parsed.netloc
+    if parsed.port is None:
+        netloc = parsed.hostname + default_scheme2port.get(parsed.scheme, "")
+    return urlparse.urlunsplit((parsed.scheme, netloc, parsed.path, parsed.query, ""))
+
+
 def web_login(host, user, credentials,
               proto="http",
               login_loc="/accounts/login/",
@@ -778,7 +803,7 @@ def web_login(host, user, credentials,
         # Find "csrftoken" in cookiejar
         csrf_cookies = [c for c in cookie_handler.cookiejar if c.name == "csrftoken"]
         if len(csrf_cookies) != 1:
-            raise Exception("{n} csrftoken cookies found in login pages (need exactly 1).")
+            raise Exception("{n} csrftoken cookies found in login pages (need exactly 1).".format(n=len(csrf_cookies)))
         LOG.debug("csrftoken={c}".format(c=csrf_cookies[0].value))
 
         # Login via POST request
@@ -792,7 +817,7 @@ def web_login(host, user, credentials,
                               }))
 
         # If successful, next url of the response must match
-        if response.geturl() != next_url:
+        if canonize_url(response.geturl()) != canonize_url(next_url):
             raise Exception("Wrong credentials: Please try again")
 
         # Logged in: Install opener, save credentials

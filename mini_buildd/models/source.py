@@ -62,17 +62,17 @@ Use the 'directory' notation with exactly one trailing slash (like 'http://examp
         @classmethod
         def mbd_meta_add_debian(cls, msglog):
             "Add internet Debian archive sources."
-            for url in ["http://ftp.debian.org/debian/",                                # Debian Releases
-                        "http://httpredir.debian.org/debian/",                          # alt: httpredir
-                        "http://ftp.de.debian.org/debian/",                             # alt: full mirror
+            for url in ["http://ftp.debian.org/debian/",                                 # Debian Releases
+                        "http://httpredir.debian.org/debian/",                           # alt: httpredir
+                        "http://ftp.de.debian.org/debian/",                              # alt: full mirror
 
-                        "http://archive.debian.org/debian/",                            # Archived Debian Releases
-                        "http://httpredir.debian.org/debian-archive/debian/",           # alt: httpredir
-                        "http://ftp.de.debian.org/debian-archive/debian/",              # alt: full mirror
+                        "http://archive.debian.org/debian/",                             # Archived Debian Releases
+                        "http://httpredir.debian.org/debian-archive/debian/",            # alt: httpredir
+                        "http://ftp.de.debian.org/debian-archive/debian/",               # alt: full mirror
 
-                        "http://archive.debian.org/debian-backports/",                  # Archived Debian Backports
-                        "http://httpredir.debian.org/debian-archive/debian-backports/", # alt: httpredir
-                        "http://ftp.de.debian.org/debian-archive/debian-backports/",    # alt: full mirror
+                        "http://archive.debian.org/debian-backports/",                   # Archived Debian Backports
+                        "http://httpredir.debian.org/debian-archive/debian-backports/",  # alt: httpredir
+                        "http://ftp.de.debian.org/debian-archive/debian-backports/",     # alt: full mirror
                         ]:
                 cls._mbd_get_or_create(msglog, url)
             msglog.info("Consider adding archives with your local or closest mirrors; check 'netselect-apt'.")
