@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import django.views.generic.base
+import django.contrib.admin
+import django.contrib.auth.views
+
 # pylint: disable=F0401,E0611
 try:
     # django >= 1.6
@@ -11,10 +15,6 @@ except ImportError:
     from django.conf.urls.defaults import patterns, include, url
     DJANGO_UID_HASH = "b36"
 # pylint: enable=F0401,E0611
-
-import django.views.generic.base
-import django.contrib.admin
-import django.contrib.auth.views
 
 django.contrib.admin.autodiscover()
 

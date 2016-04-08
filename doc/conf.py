@@ -23,16 +23,6 @@ sys.path.insert(0, os.path.abspath('..'))
 import mini_buildd.django_settings
 mini_buildd.django_settings.pseudo_configure()
 
-# Try building models graphic
-try:
-    import django
-    import django.core.management
-    import mini_buildd.models
-    mini_buildd.models.import_all()
-    django.core.management.call_command('graph_models', 'mini_buildd', outputfile="_static/mini_buildd_models.png")
-except Exception as e:
-    print("E: Creating models graphic failed (continuing anyway...): {e}".format(e=e))
-
 # do not import mini-buildd's version before path insertion -- otherwise
 # sphinx-build terminates with following message: "error: no such option: -b"
 from mini_buildd import __version__

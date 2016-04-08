@@ -8,19 +8,20 @@ import pickle
 import urllib2
 import urlparse
 import re
-
-# mini-buildd API transfers log message via HTTP headers. The default (100) is sometimes too low.
-# pylint: disable=W0212
 import httplib
-httplib._MAXHEADERS = 500
-# pylint: enable=W0212
 
 import debian.debian_support
 
 import mini_buildd.misc
 
+# mini-buildd API transfers log message via HTTP headers. The default (100) is sometimes too low.
+# pylint: disable=protected-access
+httplib._MAXHEADERS = 500
+# pylint: enable=protected-access
+
 
 def _django_pseudo_configure():
+    # pylint: disable=wrong-import-position
     import mini_buildd.django_settings
     import django.core.management
     import mini_buildd.models

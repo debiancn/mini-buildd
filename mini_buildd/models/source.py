@@ -90,6 +90,7 @@ Use the 'directory' notation with exactly one trailing slash (like 'http://examp
         return "{u} (ping {p} ms)".format(u=self.url, p=self.ping)
 
     def clean(self, *args, **kwargs):
+        # pylint: disable=unsubscriptable-object
         if self.url[-1] != "/" or self.url[-2] == "/":
             raise django.core.exceptions.ValidationError("The URL must have exactly one trailing slash (like 'http://example.org/path/').")
         super(Archive, self).clean(*args, **kwargs)

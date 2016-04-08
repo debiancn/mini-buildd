@@ -20,7 +20,6 @@ MBD_INSTALLED_APPS = (
     "django.contrib.admin",
     "django.contrib.sessions",
     "django.contrib.admindocs",
-    "django_extensions",
     "registration",
     "mini_buildd")
 

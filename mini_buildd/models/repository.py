@@ -846,6 +846,8 @@ Example:
         return result
 
     def _mbd_reprepro_config(self):
+        # pylint: disable=no-member
+
         dist_template = """
 Codename: {distribution}
 Suite: {distribution}

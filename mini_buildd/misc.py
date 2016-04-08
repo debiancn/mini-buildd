@@ -27,17 +27,17 @@ import logging.handlers
 import debian.debian_support
 
 # Workaround: Avoid warning 'No handlers could be found for logger "keyring"'
+# pylint: disable=wrong-import-position,wrong-import-order,import-error,no-name-in-module
 KEYRING_LOG = logging.getLogger("keyring")
 KEYRING_LOG.addHandler(logging.NullHandler())
 import keyring
-# pylint: disable=F0401,E0611
 try:
     from keyring.util.platform_ import data_root as keyring_data_root
 except ImportError:
     from keyring.util.platform import data_root as keyring_data_root
-# pylint: enable=F0401,E0611
 
 import mini_buildd.setup
+# pylint: enable=wrong-import-position,wrong-import-order,import-error,no-name-in-module
 
 LOG = logging.getLogger(__name__)
 
@@ -872,6 +872,7 @@ def setup_console_logging(level=logging.DEBUG):
 
 
 if __name__ == "__main__":
+    # pylint: disable=wrong-import-position,wrong-import-order
     setup_console_logging()
     import doctest
     doctest.testmod()

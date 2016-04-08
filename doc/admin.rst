@@ -131,9 +131,6 @@ case of chroots, even artifacts on the system, see `Model
 statuses` below), so this file cannot be simply interchanged or
 copied.
 
-As appetizer, have a look at this :download:`models
-overview<_static/mini_buildd_models.png>`.
-
 
 Model statuses
 ==============
