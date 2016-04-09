@@ -412,7 +412,7 @@ def run():
 class Daemon(object):
     def __init__(self):
         # Set global to ourself
-        global _INSTANCE
+        global _INSTANCE  # pylint: disable=global-statement
         _INSTANCE = self
 
         # When this is not None, daemon is running
@@ -533,8 +533,7 @@ class Daemon(object):
 
     @classmethod
     def meta(cls, model, func, msglog):
-        # pylint: disable=W0123
-        model_class = eval("mini_buildd.models.{m}.Admin".format(m=model))
+        model_class = eval("mini_buildd.models.{m}.Admin".format(m=model))  # pylint: disable=eval-used
         getattr(model_class, "mbd_meta_{f}".format(f=func))(msglog)
 
     @classmethod
@@ -749,7 +748,6 @@ def get():
 
 
 if __name__ == "__main__":
-    # pylint: disable=wrong-import-position,wrong-import-order
     mini_buildd.misc.setup_console_logging()
-    import doctest
+    import doctest  # pylint: disable=wrong-import-position,wrong-import-order
     doctest.testmod()

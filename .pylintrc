@@ -1,14 +1,19 @@
 [MESSAGES CONTROL]
 
-# E1002: too many false-positives with django 1.5
-# W1302: Came with pylint 1.3: this just seems to be wrong.
-# W1202: Should be rechecked, but not for 1.0.x
-# R0204(redefined-variable-type): Seems unstable atm.
-disable=E1002,
-        C0111,C0301,C0330,
-        W0142,W0232,W0603,W0702,W0703,W1202,W0621,W1302,
-        I0011,locally-enabled,
-        R0401,redefined-variable-type
+# logging-format-interpolation: Should be rechecked, but not for 1.0.x
+# redefined-variable-type: Seems unstable atm.
+# cyclic-import: Strange error on templatetags package that can't be disabled inline.
+disable=
+	missing-docstring,
+	line-too-long,
+	no-init,
+	bare-except,
+	broad-except,
+	logging-format-interpolation,
+	redefined-outer-name,
+	locally-disabled,
+	cyclic-import,
+	redefined-variable-type
 
 [REPORTS]
 reports=no

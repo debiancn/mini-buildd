@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # django false-positives:
-# pylint: disable=E1123,E1120
+# pylint: disable=unexpected-keyword-arg,no-value-for-parameter
 from __future__ import unicode_literals
 
 import os

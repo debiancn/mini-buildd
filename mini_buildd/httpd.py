@@ -18,8 +18,7 @@ import mini_buildd.setup
 LOG = logging.getLogger(__name__)
 
 
-# pylint: disable=W0212
-class StaticWithIndex(cherrypy._cptools.HandlerTool):
+class StaticWithIndex(cherrypy._cptools.HandlerTool):  # pylint: disable=protected-access
     _TABLE_HEADER = """\
 <tr>
  <th align="left">Name</th>
@@ -135,7 +134,6 @@ class StaticWithIndex(cherrypy._cptools.HandlerTool):
 
     def __init__(self):
         super(StaticWithIndex, self).__init__(self._mbd_serve)
-# pylint: enable=W0212
 
 
 def run(bind, wsgi_app):
@@ -187,9 +185,7 @@ def run(bind, wsgi_app):
         backupCount=9,
         encoding="UTF-8")
     handler.setLevel(logging.DEBUG)
-# pylint: disable=W0212
-    handler.setFormatter(cherrypy._cplogging.logfmt)
-# pylint: enable=W0212
+    handler.setFormatter(cherrypy._cplogging.logfmt)  # pylint: disable=protected-access
     cherrypy.log.access_log.addHandler(handler)
 
     # Serve mini_buildd webapp's static directory

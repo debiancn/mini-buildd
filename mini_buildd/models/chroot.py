@@ -151,17 +151,16 @@ chroots (with <tt>qemu-user-static</tt> installed).
         return [
             (["/bin/mkdir", "--verbose", self.mbd_get_tmp_dir()],
              ["/bin/rm", "--recursive", "--one-file-system", "--force", self.mbd_get_tmp_dir()])] + self.mbd_get_backend().mbd_get_pre_sequence() + [
-            ([self.mbd_get_extra_option("Debootstrap-Command", "/usr/sbin/debootstrap"),
-              "--variant=buildd",
-              "--keyring={k}".format(k=self.mbd_get_keyring_file()),
-              "--arch={a}".format(a=self.architecture.name),
-              self.source.codename,
-              self.mbd_get_tmp_dir(),
-              self.source.mbd_get_archive().url],
-             ["/bin/umount", "-v", os.path.join(self.mbd_get_tmp_dir(), "proc"), os.path.join(self.mbd_get_tmp_dir(), "sys")])] + self.mbd_get_backend().mbd_get_post_sequence() + [
-
-            (["/bin/cp", "--verbose", self.mbd_get_schroot_conf_file(), self.mbd_get_system_schroot_conf_file()],
-             ["/bin/rm", "--verbose", self.mbd_get_system_schroot_conf_file()])]
+                 ([self.mbd_get_extra_option("Debootstrap-Command", "/usr/sbin/debootstrap"),
+                   "--variant=buildd",
+                   "--keyring={k}".format(k=self.mbd_get_keyring_file()),
+                   "--arch={a}".format(a=self.architecture.name),
+                   self.source.codename,
+                   self.mbd_get_tmp_dir(),
+                   self.source.mbd_get_archive().url],
+                  ["/bin/umount", "-v", os.path.join(self.mbd_get_tmp_dir(), "proc"), os.path.join(self.mbd_get_tmp_dir(), "sys")])] + self.mbd_get_backend().mbd_get_post_sequence() + [
+                      (["/bin/cp", "--verbose", self.mbd_get_schroot_conf_file(), self.mbd_get_system_schroot_conf_file()],
+                       ["/bin/rm", "--verbose", self.mbd_get_system_schroot_conf_file()])]
 
     def mbd_prepare(self, request):
         mini_buildd.misc.mkdirs(os.path.join(self.mbd_get_path(), mini_buildd.setup.CHROOT_LIBDIR))

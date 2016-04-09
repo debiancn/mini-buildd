@@ -81,7 +81,7 @@ class Reprepro(object):
                                "sourceversion": item_split[5],
                                "distribution": item_split[6],
                                "component": item_split[7],
-                               })
+                              })
         return result
 
     def show(self, package):
@@ -96,7 +96,7 @@ class Reprepro(object):
                 result.append({"source": item_split[0].strip(),
                                "sourceversion": item_split[1].strip(),
                                "distribution": item_split[2].strip(),
-                               })
+                              })
         return result
 
     def migrate(self, package, src_distribution, dst_distribution, version=None):

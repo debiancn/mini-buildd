@@ -4,7 +4,6 @@ from __future__ import unicode_literals
 import os
 import logging
 import random
-from distutils.version import LooseVersion
 
 import django
 import django.conf
@@ -124,8 +123,7 @@ def configure(smtp_string, loglevel):
 
         INSTALLED_APPS=MBD_INSTALLED_APPS)
 
-    if LooseVersion(django.get_version()) >= LooseVersion("1.7.0"):
-        django.setup()
+    django.setup()
 
 
 def pseudo_configure():

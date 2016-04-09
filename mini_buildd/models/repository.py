@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # django false-positives:
-# pylint: disable=E1123,E1120
+# pylint: disable=unexpected-keyword-arg,no-value-for-parameter
 from __future__ import unicode_literals
 
 import os
@@ -759,9 +759,7 @@ Example:
     def mbd_get_uploader_keyring(self):
         gpg = mini_buildd.gnupg.TmpGnuPG()
         # Add keys from django users
-        # pylint: disable=E1101
         for u in django.contrib.auth.models.User.objects.filter(is_active=True):
-            # pylint: enable=E1101
             LOG.debug("Checking user: {u}".format(u=u))
 
             uploader = None
@@ -846,8 +844,6 @@ Example:
         return result
 
     def _mbd_reprepro_config(self):
-        # pylint: disable=no-member
-
         dist_template = """
 Codename: {distribution}
 Suite: {distribution}
@@ -872,7 +868,7 @@ DscIndices: Sources Release . .gz .bz2
                     meta_distributions=" ".join(self.mbd_get_meta_distributions(d, s)),
                     origin=self.mbd_get_daemon().model.mbd_get_archive_origin(),
                     components=" ".join(d.mbd_get_components()),
-                    architectures=" ".join([x.name for x in d.architectures.all()]),
+                    architectures=" ".join([x.name for x in d.architectures.all()]),  # pylint: disable=no-member
                     desc=self.mbd_get_description(d, s),
                     na="yes" if s.not_automatic else "no",
                     bau="yes" if s.but_automatic_upgrades else "no")
@@ -883,7 +879,7 @@ DscIndices: Sources Release . .gz .bz2
                         meta_distributions="",
                         origin=self.mbd_get_daemon().model.mbd_get_archive_origin(),
                         components=" ".join(d.mbd_get_components()),
-                        architectures=" ".join([x.name for x in d.architectures.all()]),
+                        architectures=" ".join([x.name for x in d.architectures.all()]),  # pylint: disable=no-member
                         desc="{d}: Automatic rollback distribution #{r}".format(d=self.mbd_get_description(d, s), r=r),
                         na="yes",
                         bau="no")

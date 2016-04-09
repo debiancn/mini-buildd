@@ -27,17 +27,15 @@ import logging.handlers
 import debian.debian_support
 
 # Workaround: Avoid warning 'No handlers could be found for logger "keyring"'
-# pylint: disable=wrong-import-position,wrong-import-order,import-error,no-name-in-module
 KEYRING_LOG = logging.getLogger("keyring")
 KEYRING_LOG.addHandler(logging.NullHandler())
-import keyring
+import keyring  # pylint: disable=wrong-import-position
 try:
-    from keyring.util.platform_ import data_root as keyring_data_root
+    from keyring.util.platform_ import data_root as keyring_data_root  # pylint: disable=wrong-import-position,wrong-import-order,import-error,no-name-in-module
 except ImportError:
-    from keyring.util.platform import data_root as keyring_data_root
+    from keyring.util.platform import data_root as keyring_data_root  # pylint: disable=wrong-import-position,wrong-import-order,import-error,no-name-in-module
 
-import mini_buildd.setup
-# pylint: enable=wrong-import-position,wrong-import-order,import-error,no-name-in-module
+import mini_buildd.setup  # pylint: disable=wrong-import-position
 
 LOG = logging.getLogger(__name__)
 
@@ -814,7 +812,7 @@ def web_login(host, user, credentials,
                               "csrfmiddlewaretoken": csrf_cookies[0].value,
                               "this_is_the_login_form": "1",
                               "next": next_loc,
-                              }))
+                             }))
 
         # If successful, next url of the response must match
         if canonize_url(response.geturl()) != canonize_url(next_url):
@@ -872,7 +870,6 @@ def setup_console_logging(level=logging.DEBUG):
 
 
 if __name__ == "__main__":
-    # pylint: disable=wrong-import-position,wrong-import-order
     setup_console_logging()
-    import doctest
+    import doctest  # pylint: disable=wrong-import-position,wrong-import-order
     doctest.testmod()

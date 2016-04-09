@@ -292,8 +292,7 @@ try:
     if "profile" in mini_buildd.setup.DEBUG:
         PROFILE = os.path.join(mini_buildd.setup.LOG_DIR, "daemon.profile")
         LOG.warn("PROFILE DEBUG MODE: Profiling to '{p}'".format(p=PROFILE))
-        # pylint: disable=wrong-import-position,wrong-import-order
-        import cProfile
+        import cProfile  # pylint: disable=wrong-import-position,wrong-import-order
         cProfile.run("MAIN.run()", PROFILE)
     else:
         MAIN.run()

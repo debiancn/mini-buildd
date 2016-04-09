@@ -127,7 +127,7 @@ def run(bind, queue):
     ftpd = pyftpdlib.servers.FTPServer(ba.tuple, handler)
     LOG.info("Starting ftpd on '{b}'.".format(b=ba.string))
 
-    global _RUN
+    global _RUN  # pylint: disable=global-statement
     _RUN = True
 
     while _RUN:
@@ -139,5 +139,5 @@ _RUN = None
 
 
 def shutdown():
-    global _RUN
+    global _RUN  # pylint: disable=global-statement
     _RUN = False

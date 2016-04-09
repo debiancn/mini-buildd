@@ -73,7 +73,7 @@ Use the 'directory' notation with exactly one trailing slash (like 'http://examp
                         "http://archive.debian.org/debian-backports/",                   # Archived Debian Backports
                         "http://httpredir.debian.org/debian-archive/debian-backports/",  # alt: httpredir
                         "http://ftp.de.debian.org/debian-archive/debian-backports/",     # alt: full mirror
-                        ]:
+                       ]:
                 cls._mbd_get_or_create(msglog, url)
             msglog.info("Consider adding archives with your local or closest mirrors; check 'netselect-apt'.")
 
@@ -82,7 +82,7 @@ Use the 'directory' notation with exactly one trailing slash (like 'http://examp
             "Add internet Ubuntu archive sources."
             for url in ["http://archive.ubuntu.com/ubuntu/",              # Ubuntu releases
                         "http://old-releases.ubuntu.com/ubuntu/",         # Older Ubuntu release
-                        ]:
+                       ]:
                 cls._mbd_get_or_create(msglog, url)
             msglog.info("Consider replacing these archives with you closest mirror(s); check netselect-apt.")
 
@@ -90,8 +90,7 @@ Use the 'directory' notation with exactly one trailing slash (like 'http://examp
         return "{u} (ping {p} ms)".format(u=self.url, p=self.ping)
 
     def clean(self, *args, **kwargs):
-        # pylint: disable=unsubscriptable-object
-        if self.url[-1] != "/" or self.url[-2] == "/":
+        if self.url[-1] != "/" or self.url[-2] == "/":  # pylint: disable=unsubscriptable-object
             raise django.core.exceptions.ValidationError("The URL must have exactly one trailing slash (like 'http://example.org/path/').")
         super(Archive, self).clean(*args, **kwargs)
 

@@ -680,14 +680,13 @@ COMMANDS = [(COMMAND_GROUP, "Daemon commands"),
             (COMMAND_GROUP, "User management commands"),
             (SetUserKey.COMMAND, SetUserKey),
             (Subscription.COMMAND, Subscription),
-            ]
+           ]
 
 COMMANDS_DICT = dict(COMMANDS)
 
 COMMANDS_DEFAULTS = [(cmd, cls(cls.get_default_args()) if cmd != COMMAND_GROUP else cls) for cmd, cls in COMMANDS]
 
 if __name__ == "__main__":
-    # pylint: disable=wrong-import-position,wrong-import-order
     mini_buildd.misc.setup_console_logging()
-    import doctest
+    import doctest  # pylint: disable=wrong-import-position,wrong-import-order
     doctest.testmod()

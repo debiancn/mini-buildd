@@ -48,9 +48,7 @@ def mbd_daemon_is_running(dummy):
 @register.inclusion_tag("includes/mbd_model_count.html")
 def mbd_model_count(model):
     ret = {}
-    # pylint: disable=W0123
-    model_class = eval("mini_buildd.models.{m}".format(m=model))
-    # pylint: enable=W0123
+    model_class = eval("mini_buildd.models.{m}".format(m=model))  # pylint: disable=eval-used
     if getattr(model_class, "mbd_is_prepared", None):
         # Status model
         ret["active"] = model_class.objects.filter(status__exact=model_class.STATUS_ACTIVE).count()
