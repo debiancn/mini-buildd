@@ -1,3 +1,139 @@
+mini-buildd (1.0.11) unstable; urgency=medium
+
+  The "eight-legged freak" stable point release.
+
+  Crucial user-visible changes summary:
+   - python client API: This merges this long-petted feature branch.
+     Docs and examples will follow in the next release ;).
+   - schroot workarounds: Workaround for #728096 is now ootb, and a
+     (ootb) workaround for archived squeeze is added.
+   - wizards cleaned up; the recommended DirChroot backend now guesses
+     the default backend (aufs vs. overlay).
+   - no longer needs p-d-extensions.
+
+  * [eec512f] chroot wizard: Improve note when a customized chroot is
+    skipped, and make it a warning.
+  * [cd28cbb] web admin: Fix "search" function for 'Chroot' and
+    'Uploader'.
+  * [1945d13] doc/user.rst: Improve introduction/default layout
+    description.
+  * [2bebf1c] example packages: Update config.guess|sub.
+  * [adb26f8] [django 1.9] Fix jquery URI && distribution option tag.
+    Thanks to Eldon Koyle (Closes: 813720)
+  * [4b81c73] Add initial python client 'API' for 1.0.x.
+  * [f9e62c2] client API: Add django_pseudo_configure workaround.
+  * [649e4b3] misc.py: mkdirs: Add doc/note to myself (for the upcoming
+    upgrade to python 3.x).
+  * [6619511] client_api_10x.py: Daemon: Add self.url.
+  * [e02a913] [django 1.7-9] client_api_10x.py: Update "syncdb" to
+    "migrate".
+  * [8061242] [django 1.9] Call django.setup() directly after configure().
+  * [25e0931] [django 1.9] Pseudo config now also needs
+    "django.contrib.auth" and "django.contrib.contenttypes".
+  * [d0c6fed] Move pseudo configuration function to
+    "mini_buildd/django_settings.py".
+  * [1824cd5] django_settings.py: pseudo config: autodoc also needs
+    "registration".
+  * [932e994] django_settings.py: conf, pseudo conf: Use same value
+    "INSTALLED_APPS".
+  * [2a049e7] Use new pseudo config for sphinx doc (obsoletes
+    "doc/django_settings.py").
+  * [56f76ab] client_api_10x.py: Add status (caching) support.
+  * [2dd969c] client_api_10x.py: Support archive identity.
+  * [beb520f] client_api_10x.py: Add extra function: get_package_versions.
+  * [3ec7026] client_api_10x.py: get_package_version: Report a dict with
+    various infos, not just version.
+  * [6ab382f] django_settings.py: Pseudo config: Also set
+    MIDDLEWARE_CLASSES explicitly to avoid nasty warning with django 1.7.
+  * [56a3425] api: Move to own package.
+  * [3f84b08] api: Move client API to api/ package.
+  * [7782370] Add 'api/_contrib.py': Non-mini-buildd extra code; adds
+    DebianPackageTracker class.
+  * [b4d2eef] api/_contrib.py: Improve DebianPackageTracker class.
+  * [78e7cca] api/_contrib.py: Add some docs.
+  * [b437008] setup.py: Add mini_buildd/api to packages.
+  * [e1172f3] examples: migrate-keyring-packages, python-client: Update to
+    final client api location.
+  * [6b543ce] [wizard] Clean up archives && remove any old backports.org
+    archives.
+  * [a42f3f3] Add permanent schroot/setup.d workaround script; integrate
+    'shmbug728096' workaround and fix it so it "just works" (no manual
+    enabling needed any more).
+  * [388bc23] 15mini-buildd-workarounds: Add schroot workaround for
+    archived Debian distributions (disable the valid-until check).
+  * [708da60] 15mini-buildd-workarounds: Cosmetic log fix.
+  * [3b05f0b] misc.py: web_login(): Fix exception string.
+  * [d3939fd] api/client_1_0.py: login(): Ask for user if not given.
+  * [acd7e71] api/client_1_0.py: login(): Handle proto down to web-
+    login().
+  * [0865b08] api/client_1_0.py: Fix archive identity "parser" (for
+    archive ids that include a hyphen).
+  * [d8db641] misc.py: Add canonize_url() tool function.
+  * [d4775bd] misc.py: web-login(): Canonize URLs before "unauthorized"
+    check.
+  * [d7f2776] api/client_1_0.py: login(): Return instance to allow
+    convenience syntax.
+  * [9e513f6] api/client_1_0.py: Add "dry run" feature.
+  * [0872560] api/client_1_0.py: Compact/renice code.
+  * [fedd36a] api/client_1_0.py: auto_confirm, dry_run: Skip extra
+    property support.
+  * [bdda89d] api/client_1_0.py: Log HTTP status code for failed calls
+    too.
+  * [03f1ae4] api/client_1_0.py: Add "interactive retry convenience code".
+  * [72d9b29] api/client_1_0.py: call(): Fail/except when the API call
+    fails.
+  * [af7c51d] control: Update dependency on reprepro: >= 4.17 for dbgsym
+    support.
+  * [39dc9e7] api/client_1_0.py: Add batch_mode (non-interactive mode).
+  * [b537c17] api/client_1_0.py: call(): Add "raise_on_error" support.
+  * [826a847] api/client_1_0.py: Cosmetics on API call logs.
+  * [dd83414] api/client_1_0.py: Make bulk_migrate() public.
+  * [42d9521] api/client_1_0.py: wait_for_package(): Initial impl.
+  * [9b3a3eb] api/client_1_0.py: Add "django_mode" support, defaulting to
+    true.
+  * [c8c2b58] api/client_1_0.py: wait_for_package(): Fix: Actually
+    increase tries.
+  * [58dbebf] api/client_1_0.py: wait_for_package(): Simplify/improve log
+    output.
+  * [b84b45c] api/client_1_0.py: wait_for_package(): Error handling
+    support && code cosmetics.
+  * [b1b97f3] api/client_1_0.py: wait_for_package(): Support version=None
+    (any version).
+  * [fbf0111] api/client_1_0.py: has_package(): Add initial impl.
+  * [9601e59] api/client_1_0.py: wait-for_package(): Fixup logged wording
+    when match found.
+  * [dfc45e0] api/client_1_0.py: Monkey patch httplib._MAXHEADERS to 500
+    (default '100' may be too low as log messages are transferred via HTTP
+    headers).
+  * [19a361f] api/client_1_0.py: wait_for_package(): Add "or_greater
+    support" for version.
+  * [fab38f6] api/client_1_0.py: wait_for_package(), has_package(): Fixup
+    arg order.
+  * [84b1528] Bulk pep8 fixes on new code.
+  * [4a646a9] Bulk pylint fixes on new code / newer pylint.
+  * [7fd1435] models/chroot.py: DirChroot: Add guesser for the default
+    backend value ('aufs' versus 'overlay') based on kernel version.
+  * [823aaac] More code fixes and config adaptions for pylint (1.5.2).
+  * [2a46597] Remove dependency on p-d-extensions for good (only needed
+    for one graphic in the manual).
+  * [76c0be6] control: Update Stds-Ver to 3.9.8 (no changes needed).
+  * [e27d40f] pylint (1.5.2): Bulk-switch to symbolic message names.
+  * [b93a149] pylint (1.5.2): Bulk-convert inline exceptions to "one-
+    lines" where possible (and also removes some no longer needed).
+  * [986da34] urls.py+root_urls.py: Remove obsoleted compat code for
+    django 1.5/1.6 and older p-d-r.
+  * [f0be9cc] django_settings.py: Remove obsoleted compat code for django
+    < 1.7.
+  * [a1c7804] pylint (1.5.2): Phasing out some per-project exceptions:
+    super-on-old-class, bad-continuation, bad-format-string, global-
+    statement.
+  * [0e54a86] [devel] pep8: Use config file && remove old compat from call
+    code.
+  * [6de2d92] [devel] Add support for a testing (passwordless) setup of
+    p-keyring.
+
+ -- Stephan Sürken <absurd@debian.org>  Sun, 10 Apr 2016 15:57:55 +0000
+
 mini-buildd (1.0.10~bpo8+1) jessie-backports; urgency=medium
 
   * Rebuild for jessie-backports. This will make this work with the

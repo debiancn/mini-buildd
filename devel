@@ -61,6 +61,24 @@ mbd_installdeps()
 	sudo apt-get install --no-install-recommends --target-release='*' sbuild schroot reprepro debootstrap lintian
 }
 
+mbd_pythonkeyringtestconfig()
+{
+	sudo apt-get install python-keyrings.alt || true   # for the PlainTextKeyring
+	sudo apt-get remove python-secretstorage || true  # posible delay/timeout when trying to contact dbus
+	local configDir="$(python -c "import keyring.util.platform_; print(keyring.util.platform_.config_root())")" || local configDir="${HOME}/.local/share/python_keyring"
+
+	local configFile="${configDir}/keyringrc.cfg"
+	cat <<EOF >"${configFile}"
+[backend]
+# stretch (p-k 8.5)
+default-keyring=keyrings.alt.file.PlaintextKeyring
+# jessie (p-k 4.0)
+##default-keyring=keyring.backends.file.PlaintextKeyring
+EOF
+	cat "${configFile}"
+	printf "W: %s overwritten for testing, unencrypted password store! You might need to adapt that file for older p-k versions!\n" "${configFile}"
+}
+
 mbd_pyenv()
 {
 	printf "export PYTHONPATH=\"${PYPATH}\"\n"
