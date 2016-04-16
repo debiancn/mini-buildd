@@ -1,3 +1,15 @@
+mini-buildd (1.0.11~bpo8+1) jessie-backports; urgency=medium
+
+  * [fb078b9] Revert "Depend on ‘python-daemon’ 2.0.5 for new lockfile
+    API."
+  * [2cc82b2] Revert "Remove references to obsolete
+    ‘daemon.pidlockfile’ API."
+  * [b9025c7] control: For systems <= jessie: Depend on python-daemon < 2
+    and python-lockfile (<= 1:0.9~) (incompatible API changes).
+  * [d3a70ea] debian/gbp.conf: Point to 1.0.x-jessie.
+
+ -- Stephan Sürken <absurd@debian.org>  Sat, 16 Apr 2016 10:23:36 +0000
+
 mini-buildd (1.0.11) unstable; urgency=medium
 
   The "eight-legged freak" stable point release.
