@@ -745,9 +745,3 @@ _INSTANCE = None
 def get():
     assert _INSTANCE
     return _INSTANCE
-
-
-if __name__ == "__main__":
-    mini_buildd.misc.setup_console_logging()
-    import doctest  # pylint: disable=wrong-import-position,wrong-import-order
-    doctest.testmod()

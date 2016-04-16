@@ -1,4 +1,4 @@
-{% load base %}
+{% load mini_buildd_tags %}
 
 <table>
 	<tr>
@@ -30,6 +30,7 @@
 							 title="{{ breq.remote_http_url }}: {% firstof success.bres_stat failed.bres_stat "Go to remote" %}">
 							{{ arch }}
 						</a>
+						{% mbd_build_status success failed %}
 					{% endwith %}
 				{% endfor %}
 			</td>

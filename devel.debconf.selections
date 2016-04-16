@@ -1,0 +1,3 @@
+# Setting for development testing
+mini-buildd mini-buildd/admin_password password admin
+mini-buildd mini-buildd/options string --verbose --verbose --debug=exception,http,webapp

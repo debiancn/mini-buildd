@@ -1,0 +1,16 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
+import sys
+import importlib
+import doctest
+
+import mini_buildd.misc
+import mini_buildd.api
+
+mini_buildd.api.django_pseudo_configure()
+mini_buildd.misc.setup_console_logging()
+
+result = doctest.testmod(importlib.import_module(sys.argv[1]), verbose=True)
+sys.exit(result.failed)

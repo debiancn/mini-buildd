@@ -58,6 +58,56 @@ def mbd_model_count(model):
     return ret
 
 
+@register.inclusion_tag("includes/mbd_packager_status.html")
+def mbd_packager_status(packages):
+    return {"packages": packages}
+
+
+@register.inclusion_tag("includes/mbd_builder_status.html")
+def mbd_builder_status(builds):
+    return {"builds": builds}
+
+
+@register.inclusion_tag("includes/mbd_manage_subscriptions.html")
+def mbd_manage_subscriptions(repositories, package=""):
+    return {"repositories": repositories,
+            "package": package}
+
+
+@register.inclusion_tag("includes/mbd_admin_index_table_header.html")
+def mbd_admin_index_table_header(title):
+    return {"title": title}
+
+
+@register.inclusion_tag("includes/mbd_admin_index_table_row.html")
+def mbd_admin_index_table_row(app,  # pylint: disable=too-many-arguments
+                              model_name,
+                              model_path,
+                              hide_add=False,
+                              wiz0_function="",
+                              wiz0_name="",
+                              wiz0_title="",
+                              wiz1_function="",
+                              wiz1_name="",
+                              wiz1_title="",
+                              wiz2_function="",
+                              wiz2_name="",
+                              wiz2_title=""):
+    return {"app": app,
+            "model_name": model_name,
+            "model_path": model_path,
+            "hide_add": hide_add,
+            "wiz0_function": wiz0_function,
+            "wiz0_name": wiz0_name,
+            "wiz0_title": wiz0_title,
+            "wiz1_function": wiz1_function,
+            "wiz1_name": wiz1_name,
+            "wiz1_title": wiz1_title,
+            "wiz2_function": wiz2_function,
+            "wiz2_name": wiz2_name,
+            "wiz2_title": wiz2_title}
+
+
 def _mbd_e2n(func, *args, **kwargs):
     try:
         return func(*args, **kwargs)
@@ -101,3 +151,31 @@ def mbd_repository_desc(repository, distribution, suite_option):
 @register.simple_tag
 def mbd_repository_mandatory_version(repository, dist, suite):
     return _mbd_e2n(repository.layout.mbd_get_mandatory_version_regex, repository, dist, suite)
+
+
+@register.simple_tag
+def mbd_build_status(success, failed):
+    result = ""
+
+    try:
+        bres = success if success else failed
+        # Uff: Currently, we need to parse bres_stat string here: "Build=status, Lintian=status"
+        bres_stat = bres.get("bres_stat")
+        sbuild_status = bres_stat.partition(",")[0].partition("=")[2]
+        lintian_status = bres_stat.partition(",")[2].partition("=")[2]
+
+        # sbuild build log stati
+        # The only real documentation on this seems to be here: https://www.debian.org/devel/buildd/wanna-build-states
+        build_colors = {"successful": "green", "skipped": "blue", "given-back": "yellow", "attempted": "magenta", "failed": "red"}
+
+        # lintian build log stati
+        lintian_colors = {"pass": "green", "fail": "red", "None": "blue"}
+
+        # return "[BL]" html-style colorized
+        result = "[<span style=\"color:{b}\">B</span><span style=\"color:{l}\">L</span>]".format(
+            b=build_colors.get(sbuild_status, "black"),
+            l=lintian_colors.get(lintian_status, "black"))
+    except:
+        pass
+
+    return django.utils.safestring.mark_safe(result)

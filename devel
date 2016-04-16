@@ -136,12 +136,12 @@ mbd_pydoctests()
 {
 	(
 		pyenv
-		# Workaround django 1.7: Don't run doctests on any django model modules, and root_urls.py (these will now always fail)
-		# Workaround django 1.9: Don't run doctests for more modules that *import* django model modules (these will now always fail, too)
-		for m in mini-buildd mini-buildd-tool $(find mini_buildd/ -maxdepth 1 -name "*.py" -not -name "root_urls.py" -not -name "changes.py" -not -name "urls.py" -not -name "views.py" -not -name "daemon.py" -not -name "builder.py"); do
-			printf "=> Doctest on %s\n" "${m}"
-			python -m doctest -v ${m}
+		for m in $(find mini_buildd/ -maxdepth 1 -name "*.py"); do
+			local module="$(basename $(tr '/' '.' <<< ${m}) '.py')"
+			printf "=> Doctest on %s (%s)\n" "${m}" "${module}"
+			./run-doctest "${module}"
 		done
+		python -m doctest -v mini-buildd mini-buildd-tool
 	)
 }
 
@@ -277,10 +277,7 @@ mbd_install()
 	gbp buildpackage --git-ignore-new --git-ignore-branch -us -uc
 
 	_head "Installing snapshot..."
-	cat <<EOF | sudo debconf-set-selections --verbose -
-mini-buildd mini-buildd/admin_password password admin
-mini-buildd mini-buildd/options string --verbose --verbose --debug=exception,http,webapp
-EOF
+	cat ./devel.debconf.selections | sudo debconf-set-selections --verbose -
 	sudo debi
 }
 

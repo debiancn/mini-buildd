@@ -13,20 +13,10 @@ import httplib
 import debian.debian_support
 
 import mini_buildd.misc
+import mini_buildd.api
 
 # mini-buildd API transfers log message via HTTP headers. The default (100) is sometimes too low.
 httplib._MAXHEADERS = 500  # pylint: disable=protected-access
-
-
-def _django_pseudo_configure():
-    # pylint: disable=wrong-import-position
-    import mini_buildd.django_settings
-    import django.core.management
-    import mini_buildd.models
-
-    mini_buildd.django_settings.pseudo_configure()
-    mini_buildd.models.import_all()
-    django.core.management.call_command("migrate", interactive=False, run_syncdb=True, verbosity=0)
 
 
 class Daemon(object):
@@ -53,7 +43,7 @@ class Daemon(object):
         self.dry_run = dry_run
         self.batch_mode = batch_mode
         if django_mode:
-            _django_pseudo_configure()
+            mini_buildd.api.django_pseudo_configure()
 
         # Extra: status caching
         self._status = None

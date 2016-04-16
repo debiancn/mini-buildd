@@ -10,6 +10,17 @@ import mini_buildd.misc
 LOG = logging.getLogger(__name__)
 
 
+def django_pseudo_configure():
+    # pylint: disable=wrong-import-position
+    import mini_buildd.django_settings
+    import django.core.management
+    import mini_buildd.models
+
+    mini_buildd.django_settings.pseudo_configure()
+    mini_buildd.models.import_all()
+    django.core.management.call_command("migrate", interactive=False, run_syncdb=True, verbosity=0)
+
+
 class Command(object):
     COMMAND = None
 
@@ -685,8 +696,3 @@ COMMANDS = [(COMMAND_GROUP, "Daemon commands"),
 COMMANDS_DICT = dict(COMMANDS)
 
 COMMANDS_DEFAULTS = [(cmd, cls(cls.get_default_args()) if cmd != COMMAND_GROUP else cls) for cmd, cls in COMMANDS]
-
-if __name__ == "__main__":
-    mini_buildd.misc.setup_console_logging()
-    import doctest  # pylint: disable=wrong-import-position,wrong-import-order
-    doctest.testmod()

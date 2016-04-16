@@ -193,9 +193,3 @@ class TmpGnuPG(BaseGnuPG, mini_buildd.misc.TmpDir):
     def __init__(self):
         mini_buildd.misc.TmpDir.__init__(self)
         super(TmpGnuPG, self).__init__(home=self.tmpdir)
-
-
-if __name__ == "__main__":
-    mini_buildd.misc.setup_console_logging()
-    import doctest  # pylint: disable=wrong-import-position,wrong-import-order
-    doctest.testmod()

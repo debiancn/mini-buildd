@@ -1,12 +1,12 @@
 {% extends "admin/base.html" %}
 {% load i18n %}
-{% load base %}
+{% load mini_buildd_tags %}
 
 {% block title %}{{ title }} | {% trans 'Configuration of mini-buildd' %}: {% mbd_title %}{% endblock %}
 
 {% block extrahead %}
 	<link rel="shortcut icon" href="/static/favicon.ico" />
-	<link rel="stylesheet" type="text/css" href="/static/css/admin.css" />
+	<link rel="stylesheet" type="text/css" href="/static/css/mini-buildd_admin.css" />
 {% endblock %}
 
 {% block branding %}

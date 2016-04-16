@@ -426,10 +426,3 @@ Build request failed: {r} ({s}): {e}
             bres.add_file(buildlog)
             bres.save(gnupg)
             bres.upload(hopo)
-
-
-if __name__ == "__main__":
-    # pylint: disable=wrong-import-position,wrong-import-order
-    mini_buildd.misc.setup_console_logging()
-    import doctest
-    doctest.testmod()

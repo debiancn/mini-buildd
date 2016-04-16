@@ -1,4 +1,5 @@
 {% extends "registration/base.html" %}
+{% load mini_buildd_tags %}
 
 {% block title %}Manage your profile{% endblock %}
 
@@ -10,7 +11,7 @@
 		when viewing a source package's overview ("show").
 	</p>
 	<p>
-		{% include "mini_buildd/snippet_manage_subscriptions.html" with repositories=repositories %}
+		{% mbd_manage_subscriptions repositories %}
 	</p>
 	<hr/>
 

@@ -1,12 +1,15 @@
 #!/bin/bash -e
 
+printf "Usage: $0 [<host> [batch-mode]]\n\n"
+
 if [ -n "${1}" ]; then
 	HOST="${1}"
 else
 	HOST="admin@$(hostname -f):8066"
 fi
 
-cat <<EOF
+if [ "${2}" != "batch-mode" ]; then
+	cat <<EOF
 Automatically run the whole 'Admin Quickstart', all defaults,
 Debian wizards, completely non-interactive.
 
@@ -20,7 +23,8 @@ This will run for quite some time!
 This will automatically download (most likely from internet) tons of data!
 
 EOF
-read -p"Ctr-C to abort, RETURN to continue" dummy
+	read -p"Ctr-C to abort, RETURN to continue" dummy
+fi
 
 MBDT="mini-buildd-tool ${HOST}"
 
@@ -50,7 +54,7 @@ ${MBDT} meta chroot.DirChroot pca_all
 # Show status
 ${MBDT} status
 
-# Start the daemon enginge
+# Start the daemon engine
 ${MBDT} start
 
 # Build keyring packages

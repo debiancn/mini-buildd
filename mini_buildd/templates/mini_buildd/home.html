@@ -1,5 +1,5 @@
 {% extends "mini_buildd/base.html" %}
-{% load base %}
+{% load mini_buildd_tags %}
 
 {% block title %}mini-buildd{% endblock %}
 {% block page_title %}{% mbd_title %}{% endblock %}
@@ -26,16 +26,16 @@
 				<h1 class="box-caption">
 					{% if daemon.packages.items %}<img src="/static/img/progress_blue.gif" alt="Packaging..." title="Packaging..." style="margin: -5px 0 -5px 0; padding: 0" />{% endif %}
 					Packager: {{ daemon.packages|length }} packaging</h1>
-				{% if daemon.packages.items %}
-					{% include "mini_buildd/snippet_packager_status.html" with packages=daemon.packages.values %}
-				{% endif %}
+					{% if daemon.packages.items %}
+						{% mbd_packager_status daemon.packages.values %}
+					{% endif %}
 
 				<h2>Last packages: {{ daemon.last_packages|length }}
 					(<a id="mbd_last_packages_header" href="javascript:mbdToggleElement('mbd_last_packages','mbd_last_packages_header','hide','show')" >show</a>)
 				</h2>
 				<div id="mbd_last_packages">
 					{% if daemon.last_packages %}
-						{% include "mini_buildd/snippet_packager_status.html" with packages=daemon.last_packages %}
+						{% mbd_packager_status daemon.last_packages %}
 					{% endif %}
 				</div>
 
@@ -89,7 +89,7 @@
 					Builder: {{ daemon.build_queue }} building
 				</h1>
 				{% if daemon.builds.items %}
-					{% include "mini_buildd/snippet_builder_status.html" with builds=daemon.builds.values %}
+					{% mbd_builder_status daemon.builds.values %}
 				{% endif %}
 
 				<h2>Last builds: {{ daemon.last_builds|length }}
@@ -97,7 +97,7 @@
 				</h2>
 				<div id="mbd_last_builds">
 					{% if daemon.last_builds %}
-						{% include "mini_buildd/snippet_builder_status.html" with builds=daemon.last_builds %}
+						{% mbd_builder_status daemon.last_builds %}
 					{% endif %}
 				</div>
 

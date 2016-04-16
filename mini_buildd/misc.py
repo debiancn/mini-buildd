@@ -867,9 +867,3 @@ def setup_console_logging(level=logging.DEBUG):
         l = logging.getLogger(ln)
         l.addHandler(ch)
         l.setLevel(level)
-
-
-if __name__ == "__main__":
-    setup_console_logging()
-    import doctest  # pylint: disable=wrong-import-position,wrong-import-order
-    doctest.testmod()

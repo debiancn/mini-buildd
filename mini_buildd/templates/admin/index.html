@@ -1,5 +1,6 @@
 {% extends "admin/base_site.html" %}
 {% load i18n %}
+{% load mini_buildd_tags %}
 
 {% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/admin/css/dashboard.css" />{% endblock %}
 
@@ -19,35 +20,35 @@
 							<caption class="mb"><a href="{{ app.app_url }}" class="section">{% blocktrans with app.name as name %}{{ name }}{% endblocktrans %}</a></caption>
 
 							<!-- DAEMON -->
-							{% include "admin/snippet_index_table_header.html" with title="Daemon" %}
-							{% include "admin/snippet_index_table_row.html" with model_name="Daemon" model_path="daemon.Daemon" hide_add="True" %}
+							{% mbd_admin_index_table_header "Daemon" %}
+							{% mbd_admin_index_table_row app "Daemon" "daemon.Daemon" True %}
 
 							<!-- SOURCES -->
-							{% include "admin/snippet_index_table_header.html" with title="Sources" %}
-							{% include "admin/snippet_index_table_row.html" with model_name="Archives" model_path="source.Archive" wiz0_function="add_from_sources_list" wiz0_name="Local"  wiz0_title="Scan your local system's apt setup and add all new archives found" wiz1_function="add_debian" wiz1_name="Debian" wiz1_title="Add generic internet Debian archives" wiz2_function="add_ubuntu" wiz2_name="Ubuntu" wiz2_title="Add generic internet Ubuntu archives" %}
+							{% mbd_admin_index_table_header "Sources" %}
+							{% mbd_admin_index_table_row app "Archives" "source.Archive" False "add_from_sources_list" "Local" "Scan your local system's apt setup and add all new archives found" "add_debian" "Debian" "Add generic internet Debian archives" "add_ubuntu" "Ubuntu" "Add generic internet Ubuntu archives" %}
 
-							{% include "admin/snippet_index_table_row.html" with model_name="Sources" model_path="source.Source" wiz0_function="add_debian" wiz0_name="Debian" wiz0_title="Add well-known Debian sources" wiz1_function="add_ubuntu" wiz1_name="Ubuntu" wiz1_title="Add well-known Ubuntu sources" %}
+							{% mbd_admin_index_table_row app "Sources" "source.Source" False "add_debian" "Debian" "Add well-known Debian sources" "add_ubuntu" "Ubuntu" "Add well-known Ubuntu sources" %}
 
-							{% include "admin/snippet_index_table_row.html" with model_name="Priority sources" model_path="source.PrioritySource" wiz0_function="add_extras" wiz0_name="Extras" wiz0_title="Add all non-base sources with default priority 1" %}
-							{% include "admin/snippet_index_table_row.html" with model_name="Apt keys" model_path="gnupg.AptKey" %}
+							{% mbd_admin_index_table_row app "Priority sources" "source.PrioritySource" False "add_extras" "Extras" "Add all non-base sources with default priority 1" %}
+							{% mbd_admin_index_table_row app "Apt keys" "gnupg.AptKey" %}
 
 							<!-- REPOSITORIES -->
-							{% include "admin/snippet_index_table_header.html" with title="Repositories" %}
-							{% include "admin/snippet_index_table_row.html" with model_name="Layouts" model_path="repository.Layout" wiz0_function="create_defaults" wiz0_name="Defaults" wiz0_title="Create default layout and suites" %}
-							{% include "admin/snippet_index_table_row.html" with model_name="Distributions" model_path="repository.Distribution" wiz0_function="add_base_sources" wiz0_name="Defaults" wiz0_title="Create default distributions for all active base sources with the host architectures" %}
-							{% include "admin/snippet_index_table_row.html" with model_name="Repositories" model_path="repository.Repository" wiz0_function="add_sandbox" wiz0_name="Sandbox" wiz0_title="Add sandbox repository 'test'"  wiz1_function="add_debdev" wiz1_name="Debdev" wiz1_title="Add Debian Developer sandbox repository 'debdev'" %}
-							{% include "admin/snippet_index_table_row.html" with model_name="Uploaders" hide_add="True" model_path="gnupg.Uploader" %}
+							{% mbd_admin_index_table_header "Repositories" %}
+							{% mbd_admin_index_table_row app "Layouts" "repository.Layout" False "create_defaults" "Defaults" "Create default layout and suites" %}
+							{% mbd_admin_index_table_row app "Distributions" "repository.Distribution" False "add_base_sources" "Defaults" "Create default distributions for all active base sources with the host architectures" %}
+							{% mbd_admin_index_table_row app "Repositories" "repository.Repository" False "add_sandbox" "Sandbox" "Add sandbox repository 'test'" "add_debdev" "Debdev" "Add Debian Developer sandbox repository 'debdev'" %}
+							{% mbd_admin_index_table_row app "Uploaders" "gnupg.Uploader" "True" %}
 
 							<!-- CHROOTS -->
-							{% include "admin/snippet_index_table_header.html" with title="Chroots" %}
-							{% include "admin/snippet_index_table_row.html" with model_name="Dir chroots" model_path="chroot.DirChroot" wiz0_function="add_base_sources" wiz0_name="Defaults" wiz0_title="Add default chroots for all active base sources and host architectures" %}
-							{% include "admin/snippet_index_table_row.html" with model_name="File chroots" model_path="chroot.FileChroot" wiz0_function="add_base_sources" wiz0_name="Defaults" wiz0_title="Add default chroots for all active base sources and host architectures" %}
-							{% include "admin/snippet_index_table_row.html" with model_name="Lvm chroots" model_path="chroot.LVMChroot" %}
-							{% include "admin/snippet_index_table_row.html" with model_name="Loop lvm chroots" model_path="chroot.LoopLVMChroot" wiz0_function="add_base_sources" wiz0_name="Defaults" wiz0_title="Add default chroots for all active base sources and host architectures" %}
+							{% mbd_admin_index_table_header "Chroots" %}
+							{% mbd_admin_index_table_row app "Dir chroots" "chroot.DirChroot" False "add_base_sources" "Defaults" "Add default chroots for all active base sources and host architectures" %}
+							{% mbd_admin_index_table_row app "File chroots" "chroot.FileChroot" False "add_base_sources" "Defaults" "Add default chroots for all active base sources and host architectures" %}
+							{% mbd_admin_index_table_row app "Lvm chroots" "chroot.LVMChroot" %}
+							{% mbd_admin_index_table_row app "Loop lvm chroots" "chroot.LoopLVMChroot" False "add_base_sources" "Defaults" "Add default chroots for all active base sources and host architectures" %}
 
 							<!-- REMOTES -->
-							{% include "admin/snippet_index_table_header.html" with title="Remotes" %}
-							{% include "admin/snippet_index_table_row.html" with model_name="Remotes" model_path="gnupg.Remote" %}
+							{% mbd_admin_index_table_header "Remotes" %}
+							{% mbd_admin_index_table_row app "Remotes" "gnupg.Remote" False %}
 						</table>
 					</div>
 				{% endif %}
