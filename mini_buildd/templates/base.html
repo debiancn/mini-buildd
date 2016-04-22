@@ -5,7 +5,7 @@
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<link rel="shortcut icon" href="/static/favicon.ico" />
-		<link rel="stylesheet" type="text/css" href="/static/css/mini-buildd.css" />
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/css/mini-buildd.css" />
 		<script src="{{ STATIC_URL }}{% mbd_jquery_path %}" type="text/javascript"></script>
 		<script type="text/javascript">
 			{% block localscript %}{% endblock %}
@@ -15,11 +15,11 @@
 	</head>
 	<body>
 		<!-- Header -->
-		<div id="mbd_header">
-			<div id="mbd_branding">
+		<div id="mbd-header">
+			<div id="mbd-branding">
 				<a class="image" title="mini-buildd Home" href="/"><img src="/static/img/icon_48x48.png" alt="mini-buildd logo" /></a>
 			</div>
-			<div id="mbd_navigation">
+			<div id="mbd-navigation">
 				<ul class="left">
 					<li class="first"><a href="/admin/">Configure</a></li>
 					<li><a href="/mini_buildd/api">API</a></li>
@@ -40,7 +40,7 @@
 		</div>
 
 		<!-- Page header -->
-		<div id="mbd_page_header">
+		<div id="mbd-page-header">
 			{% block page_header %}{% endblock %}
 		</div>
 
@@ -56,12 +56,12 @@
 		</div>
 
 		<!-- Content -->
-		<div id="mbd_content">
+		<div id="mbd-content">
 			{% block content %}{% endblock %}
 		</div>
 
 		<!-- Footer -->
-		<div id="mbd_footer">
+		<div id="mbd-footer">
 			<p><a class="homelink" title="mini-buildd Home" href="/mini_buildd/">{% mbd_version %}</a><span class="page-footer">{% block mbd_page_footer %}{% endblock %}</span></p>
 		</div>
 	</body>

@@ -2,7 +2,7 @@
 
 {% block page_header %}
 	<div class="left">
-		<div class="menu_title">
+		<div class="menu-title">
 			Page
 		</div>
 		{% if api_cmd.args.package %}
@@ -23,10 +23,10 @@
 		{% endif %}
 	</div>
 	<div class="center">
-		<div class="title">{% block page_title %}{% endblock %}</div><div class="sub_title">{% block page_sub_title %}{% endblock %}</div>
+		<div class="title">{% block page_title %}{% endblock %}</div><div class="sub-title">{% block page_sub_title %}{% endblock %}</div>
 	</div>
 	<div class="right">
-		<div class="menu_title">
+		<div class="menu-title">
 			Packages
 		</div>
 		<form action="/mini_buildd/api" method="get">

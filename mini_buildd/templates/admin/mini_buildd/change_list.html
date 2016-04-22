@@ -24,8 +24,8 @@
             container.find('option:gt(0)').each(function () {
                 $('<button>')
                     .appendTo(buttons)
+                    .attr('id', this.value.replace(/_/g, "-"))
                     .attr('name', this.value)
-                    .attr('id', this.value)
                     .addClass('button ' + this.text)
                     .text(this.text)
                     .click(function () {

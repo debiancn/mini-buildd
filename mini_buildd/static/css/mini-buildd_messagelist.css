@@ -13,29 +13,28 @@ ul.messagelist li
 	margin: 0 0 3px 0;
 	border-bottom: 1px solid #ddd;
 	color: #666;
-	background: #ffc url(/static/admin/img/icon_success.gif) 5px .3em no-repeat;
 }
 
 ul.messagelist li.debug
 {
-	background-image: url(/static/admin/img/tool-right_over.gif);
+	background: #ffc url(/static/img/mbd_message_debug.png) 5px .3em no-repeat;
 	color: blue;
 }
 
 ul.messagelist li.info
 {
-	background-image: url(/static/admin/img/icon_success.gif);
+	background: #ffc url(/static/img/mbd_message_info.png) 5px .3em no-repeat;
 	color: green;
 }
 
 ul.messagelist li.warning
 {
-	background-image: url(/static/admin/img/icon_alert.gif);
+	background: #ffc url(/static/img/mbd_message_warning.png) 5px .3em no-repeat;
 	color: purple;
 }
 
 ul.messagelist li.error
 {
-	background-image: url(/static/admin/img/icon_error.gif);
+	background: #ffc url(/static/img/mbd_message_error.png) 5px .3em no-repeat;
 	color: red;
 }

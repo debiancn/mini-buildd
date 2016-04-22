@@ -2,107 +2,56 @@
 
 @import url(mini-buildd_messagelist.css);
 
-#mbd_django_admin_branding h1
+#mbd-django-admin-branding h1
 {
 	color: #ffffcc;
+	display: inline;
 }
 
-#mbd_django_admin_branding img
+#mbd-django-admin-branding img
 {
 	float: left;
 	margin: 0px 10px 8px 10px;
 }
 
-#mbd_django_admin_daemon_status
+#mbd-django-admin-daemon-status
 {
 	float: left;
 	width: 100%;
-	background: url("/static/admin/img/nav-bg-reverse.gif") repeat-x scroll 0 0px white;
+	background: url("/static/img/mbd_message_warning.png") no-repeat scroll 0 0px white;
 	border-bottom: 1px solid #cccccc;
 	border-top: 1px solid #cccccc;
 	color: #999999;
 	font-size: 11px;
-	padding: 2px 0px 3px 7px;
+	padding: 2px 0px 3px 20px;
 }
 
-#mbd_django_admin_daemon_status p
+#mbd-django-admin-daemon-status p
 {
 	display: inline;
 }
 
-#mbd_django_admin_daemon_status span.warning
+#mbd-django-admin-daemon-status span.warning
 {
 	color: red;
 	font-weight: bold;
 }
 
-#mbd_django_admin_daemon_status a:link, #mbd_django_admin_daemon_status a:visited
+#mbd-django-admin-daemon-status a:link, #mbd-django-admin-daemon-status a:visited
 {
 	font-size: 11px;
 	color: #5b80b2;
 }
 
-#mbd_django_admin_daemon_status a:hover
+#mbd-django-admin-daemon-status a:hover
 {
 	color: #003366;
 	text-decoration: none;
 }
 
-#mbd_box h1.mini-buildd
-{
-	background: url("/static/admin/img/default-bg.gif") repeat-x scroll left top #7CA0C7;
-	color: white;
-	margin: 0;
-	font-size: 14px;
-	padding: 2px 0px 2px 5px;
-}
-
-#mbd_box caption
-{
-	background: url("/static/img/icon_48x48.png") no-repeat scroll right top;
-	background-color: #417690;
-	border-left: 1px solid #417690;
-	border-right: 1px solid #417690;
-	font-size: 11px;
-	padding: 5px 0px 4px 4px;
-}
-
-#mbd_box .inner-box
-{
-	margin: 12px;
-	border: 1px solid #cccccc;
-}
-
-/* Extension of existing (default) style definitions. */
-
-/* "mini-buildd"-App Caption */
 #header
 {
-	font-size: 14px;
 	background: url("/static/img/da_header_background_gradient.png") repeat-x scroll left top;
-}
-
-#header a
-{
-	font-size: 14px;
-}
-
-#content-main table
-{
-	width: 100%;
-}
-
-#content-main caption
-{
-	font-size: 11px;
-	padding: 5px 0px 4px 4px;
-}
-
-/* "Auth"-App Caption */
-#content-main caption.mb
-{
-	font-size: 14px;
-	padding: 2px 0px 2px 5px;
 }
 
 #content-main td.right
@@ -110,13 +59,13 @@
 	text-align: right;
 }
 
-#content-main a.changelink, #content-main a.addlink
+#content-main a.mbd-changelink, #content-main a.mbd-addlink
 {
 	padding-right: 1px;
 	display: inline;
 }
 
-#content-main a.wizard
+#content-main a.mbd-wizard
 {
 	background: url("/static/img/mbd_wizard.png") no-repeat scroll 3px 50%;
 	margin: 0px 0px 0px 0px;
@@ -127,54 +76,44 @@
 	display: inline;
 }
 
-#content-main .module.mb
-{
-	margin-top: 12px;
-}
-
-#content-main th.overview
-{
-	width: 100%;
-}
-
 /* For 'admin colorized button hack'; see JS hack mini_buildd/templates/admin/mini_buildd/change_list.html */
-#mbd_action_prepare.button.Prepare {
+#mbd-action-prepare.button.Prepare {
 	border-color: yellow;
 	border-width: 3px;
 	font-weight: bold;
 }
 
-#mbd_action_check.button.Check {
+#mbd-action-check.button.Check {
 	border-color: blue;
 	border-width: 3px;
 	font-weight: bold;
 }
 
-#mbd_action_pc.button.PC {
+#mbd-action-pc.button.PC {
 	border-color: darkblue;
 	border-width: 3px;
 	font-weight: bold;
 }
 
-#mbd_action_activate.button.Activate {
+#mbd-action-activate.button.Activate {
 	border-color: green;
 	border-width: 3px;
 	font-weight: bold;
 }
 
-#mbd_action_pca.button.PCA {
+#mbd-action-pca.button.PCA {
 	border-color: darkgreen;
 	border-width: 3px;
 	font-weight: bold;
 }
 
-#mbd_action_deactivate.button.Deactivate {
+#mbd-action-deactivate.button.Deactivate {
 	border-color: yellow;
 	border-width: 3px;
 	font-weight: bold;
 }
 
-#mbd_action_remove.button.Remove {
+#mbd-action-remove.button.Remove {
 	border-color: red;
 	border-width: 3px;
 	font-weight: bold;

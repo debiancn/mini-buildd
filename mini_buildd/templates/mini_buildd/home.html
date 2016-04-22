@@ -31,9 +31,9 @@
 					{% endif %}
 
 				<h2>Last packages: {{ daemon.last_packages|length }}
-					(<a id="mbd_last_packages_header" href="javascript:mbdToggleElement('mbd_last_packages','mbd_last_packages_header','hide','show')" >show</a>)
+					(<a id="mbd-last-packages_header" href="javascript:mbdToggleElement('mbd-last-packages','mbd-last-packages_header','hide','show')" >show</a>)
 				</h2>
-				<div id="mbd_last_packages">
+				<div id="mbd-last-packages">
 					{% if daemon.last_packages %}
 						{% mbd_packager_status daemon.last_packages %}
 					{% endif %}
@@ -93,9 +93,9 @@
 				{% endif %}
 
 				<h2>Last builds: {{ daemon.last_builds|length }}
-					(<a id="mbd_last_builds_header" href="javascript:mbdToggleElement('mbd_last_builds','mbd_last_builds_header','hide','show')" >show</a>)
+					(<a id="mbd-last-builds_header" href="javascript:mbdToggleElement('mbd-last-builds','mbd-last-builds_header','hide','show')" >show</a>)
 				</h2>
-				<div id="mbd_last_builds">
+				<div id="mbd-last-builds">
 					{% if daemon.last_builds %}
 						{% mbd_builder_status daemon.last_builds %}
 					{% endif %}

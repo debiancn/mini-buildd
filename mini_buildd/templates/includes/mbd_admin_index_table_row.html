@@ -10,7 +10,7 @@
 			<td class="right">
 				<!-- Support up to three wizards (repeated three times, found no good way yet to do this more nicely) -->
 				{% if wiz0_function %}
-					<a class="wizard"
+					<a class="mbd-wizard"
 						 href="/mini_buildd/api?command=meta&amp;model={{ model_path }}&amp;function={{ wiz0_function }}&amp;output=referer"
 						 title="Wizard: {{ wiz0_title }}">
 						{{ wiz0_name }}
@@ -18,7 +18,7 @@
 				{% endif %}
 
 				{% if wiz1_function %}
-					<a class="wizard"
+					<a class="mbd-wizard"
 						 href="/mini_buildd/api?command=meta&amp;model={{ model_path }}&amp;function={{ wiz1_function }}&amp;output=referer"
 						 title="Wizard: {{ wiz1_title }}">
 						{{ wiz1_name }}
@@ -26,7 +26,7 @@
 				{% endif %}
 
 				{% if wiz2_function %}
-					<a class="wizard"
+					<a class="mbd-wizard"
 						 href="/mini_buildd/api?command=meta&amp;model={{ model_path }}&amp;function={{ wiz2_function }}&amp;output=referer"
 						 title="Wizard: {{ wiz2_title }}">
 						{{ wiz2_name }}
@@ -35,10 +35,10 @@
 
 				&nbsp;&nbsp;
 				{% if not hide_add and model.perms.add %}
-					<a href="{{ model.admin_url }}add/" class="addlink">{% trans 'Add' %}</a>
+					<a href="{{ model.admin_url }}add/" class="addlink mbd-addlink">{% trans 'Add' %}</a>
 				{% endif %}
 				{% if model.perms.change %}
-					<a href="{{ model.admin_url }}" class="changelink">{% trans 'Change' %}</a>
+					<a href="{{ model.admin_url }}" class="changelink mbd-changelink">{% trans 'Change' %}</a>
 				{% endif %}
 
 			</td>

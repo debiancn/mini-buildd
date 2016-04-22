@@ -201,10 +201,29 @@ mbd_pydjangolint()
 	)
 }
 
+mbd_css()
+{
+	local class errors=0 ignoreRegex="mbd-action-.*"
+
+	for class in $(grep -h -o "#mbd[[:alnum:]\-]\+" mini_buildd/static/css/*.css | sort -r | uniq); do
+		if [[ ${class:1} =~ ${ignoreRegex} ]]; then
+			printf "Skipping %s.\n" "${class}"
+		else
+			if ! grep -r -q "${class:1}" mini_buildd/templates/; then
+				printf "E: CSS class unused: %s:\n" "${class}" >&2
+				grep -l "${class}" mini_buildd/static/css/*.css
+				errors+=1
+			fi
+		fi
+	done
+	printf "CSS: %s unused classes found.\n" "${errors}"
+	return ${errors}
+}
+
 mbd_check()
 {
 	# 2014 Feb: 'pydjangolint' removed: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=735199
-	local tests="pep8 pymisc pydoctests pyflakes pylint"
+	local tests="pep8 pymisc pydoctests pyflakes pylint css"
 	for t in ${tests}; do
 		printf "=> mbd_${t}\n"
 		mbd_${t}

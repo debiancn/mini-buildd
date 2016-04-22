@@ -6,26 +6,12 @@
 
 {% block extrahead %}
 	<link rel="shortcut icon" href="/static/favicon.ico" />
-	<link rel="stylesheet" type="text/css" href="/static/css/mini-buildd_admin.css" />
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/css/mini-buildd_admin.css" />
 {% endblock %}
 
 {% block branding %}
-	<div id="mbd_django_admin_branding">
+	<div id="mbd-django-admin-branding">
 		<a title="mini-buildd Home" href="/"><img src="/static/img/icon_48x48.png" alt="mini-buildd logo" /></a>
 		<h1>{% trans 'Configuration of mini-buildd' %}: {% mbd_title %}</h1>
 	</div>
-
-	<div id="mbd_django_admin_daemon_status">
-		<p>
-			{% if "dummy"|mbd_daemon_is_running %}
-				<span class="warning">Warning:</span>
-				The daemon is <span style="font-weight: bold">running</span>!&nbsp;
-				It's recommended to <a class="stop-daemon" title="Stop the daemon" href="/mini_buildd/api?command=stop&amp;output=referer">stop it</a> for extensive maintenance.
-			{% else %}
-				The daemon is <span style="font-weight: bold">stopped</span>!&nbsp;
-				<a class="stop-daemon" title="Start the daemon, and return to home" href="/mini_buildd/api?command=start&amp;output=referer/mini_buildd/">Restart it</a> when done.
-			{% endif %}
-		</p>
-	</div>
-
 {% endblock %}
