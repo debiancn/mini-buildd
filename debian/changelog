@@ -1,3 +1,52 @@
+mini-buildd (1.0.12) unstable; urgency=medium
+
+  This release focuses on HTML/design cleanups and fixes, and makes
+  it more compatible/maintainable across django 1.7/1.8/1.9 (and
+  hopefully future versions).
+
+  * [49f19f9] Web, "Last packages": Show sbuild- and lintian stati
+    directly, and in colors ("i386 [BL]").
+  * [44618f8] [templates] Convert 'snippet_packager_status' to inclusion
+    tag.
+  * [995193e] [templates] Convert 'snippet_builder_status' to inclusion
+    tag.
+  * [2496789] [templates] Convert 'snippet_manage_subscriptions' to
+    inclusion tag.
+  * [82e62d1] [templates] Convert 'admin/snippet_index_table_header' to
+    inclusion tag.
+  * [e328e21] [templates] Convert 'admin/snippet_index_table_row.html' to
+    inclusion tag.
+  * [e9977f1] [templatetags] Rename 'base'->'mini_buildd_tags' (possible
+    namespace pollution).
+  * [26c36a7] api: Make django_pseudo_configure() public, and move to api.
+  * [d7e9584] Add './run-doctest' tool, and re-enable all doctests for
+    modules using django.
+  * [ec4f92f] Remove "__main__ doctest run helper" from all affected
+    modules (obsoleted by ./run-doctest).
+  * [39bfbee] [devel]: Move dev testing debconf selections to extra file.
+  * [f649120] examples/auto-setup: Add "batch-mode" support (for dev
+    testing).
+  * [714dbbc] [css] Make file names "more unique", and remove some
+    redundancies.
+  * [bba1ce2] [css] mini-buildd_messagelist.css: Add custom icons for log
+    messages (we should not use django paths for that in our own CSSes).
+  * [9cc1ff6] [css] mini-buildd_admin.css: Less is more: Skip overwriting
+    most default styles (fixes some html display issues with django 1.9).
+  * [42641f1] [css] mini-buildd_admin.css: Correctly display title again
+    with django 1.9.
+  * [31b595f] [html] admin: Move "daemon running" convenience code to
+    content (displays this again this for django 1.9).
+  * [4ac61e0] [css] Style bulk fix: Class names should use hyphen, not
+    underscore.
+  * [195014d] [devel]: Add initial poor-man's check for unused CSS ids.
+  * [0f2b4ed] [css] mini-buildd.css, mini-buildd_admin.css: Remove unused
+    CSS ids.
+  * [2aade6a] [css] mini-buildd_admin.css: Fix "is running" warning image
+    and style.
+  * [2219aa0] [templates] Make all css includes use {{ STATIC_URL }}.
+
+ -- Stephan Sürken <absurd@debian.org>  Sun, 24 Apr 2016 07:39:49 +0000
+
 mini-buildd (1.0.11~bpo8+1) jessie-backports; urgency=medium
 
   * [fb078b9] Revert "Depend on ‘python-daemon’ 2.0.5 for new lockfile
