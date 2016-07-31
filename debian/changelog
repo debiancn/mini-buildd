@@ -1,3 +1,9 @@
+mini-buildd (1.0.16~bpo8+1~test80+1) jessie-test-unstable; urgency=medium
+
+  * Rebuild for mini-buildd.
+
+ -- Boyuan Yang <073plan@gmail.com>  Tue, 02 Aug 2016 16:37:52 +0800
+
 mini-buildd (1.0.16~bpo8+1) jessie-backports; urgency=medium
 
   * Rebuild for jessie-backports.
