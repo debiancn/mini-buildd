@@ -395,8 +395,7 @@ Unpreparing means all the data associated by preparation will be
 removed from the system. Especially for repositories,
 this would mean losing all packages!
 """,
-                        "action_checkbox_name": django.contrib.admin.helpers.ACTION_CHECKBOX_NAME},
-                    current_app=self.admin_site.name)
+                        "action_checkbox_name": django.contrib.admin.helpers.ACTION_CHECKBOX_NAME})
         mbd_action_remove.short_description = "Remove"
 
         def mbd_action_pc(self, request, queryset):

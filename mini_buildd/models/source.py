@@ -512,7 +512,8 @@ codeversion is only used for base sources.""")
 
 
 class PrioritySource(mini_buildd.models.base.Model):
-    source = django.db.models.ForeignKey(Source)
+    source = django.db.models.ForeignKey(Source,
+                                         on_delete=django.db.models.CASCADE)
     priority = django.db.models.IntegerField(default=1,
                                              help_text="A apt pin priority value (see 'man apt_preferences')."
                                              "Examples: 1=not automatic, 1001=downgrade'")

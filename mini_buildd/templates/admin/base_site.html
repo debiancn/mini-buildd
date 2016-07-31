@@ -1,17 +1,18 @@
 {% extends "admin/base.html" %}
+{% load staticfiles %}
 {% load i18n %}
 {% load mini_buildd_tags %}
 
 {% block title %}{{ title }} | {% trans 'Configuration of mini-buildd' %}: {% mbd_title %}{% endblock %}
 
 {% block extrahead %}
-	<link rel="shortcut icon" href="/static/favicon.ico" />
-	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/css/mini-buildd_admin.css" />
+	<link rel="shortcut icon" href="{% static "favicon.ico" %}"/>
+	<link rel="stylesheet" type="text/css" href="{% static "css/mini-buildd_admin.css" %}"/>
 {% endblock %}
 
 {% block branding %}
 	<div id="mbd-django-admin-branding">
-		<a title="mini-buildd Home" href="/"><img src="/static/img/icon_48x48.png" alt="mini-buildd logo" /></a>
+		<a title="mini-buildd Home" href="/"><img src="{% static "img/icon_48x48.png" %}" alt="mini-buildd logo" /></a>
 		<h1>{% trans 'Configuration of mini-buildd' %}: {% mbd_title %}</h1>
 	</div>
 {% endblock %}

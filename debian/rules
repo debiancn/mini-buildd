@@ -3,7 +3,7 @@
 #export DH_VERBOSE = 1
 
 %:
-	dh $@ --with=python2,sphinxdoc
+	dh $@ --with=python2,sphinxdoc,systemd
 
 override_dh_auto_build:
 	dh_auto_build

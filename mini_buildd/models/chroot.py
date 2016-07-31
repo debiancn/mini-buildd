@@ -26,6 +26,7 @@ class Chroot(mini_buildd.models.base.StatusModel):
     PERSONALITIES = {'i386': 'linux32'}
 
     source = django.db.models.ForeignKey(mini_buildd.models.source.Source,
+                                         on_delete=django.db.models.CASCADE,
                                          help_text="""\
 Base source to create the chroot from; its codename must be 'debootstrapable'.
 
@@ -33,6 +34,7 @@ Examples: "Debian 'squeeze'", "Debian 'wheezy'", "Ubuntu 'hardy'".
 """)
 
     architecture = django.db.models.ForeignKey(mini_buildd.models.source.Architecture,
+                                               on_delete=django.db.models.CASCADE,
                                                help_text="""\
 Chroot's architecture; using the same arch as the host system
 will always work, other architectures may work if supported. An

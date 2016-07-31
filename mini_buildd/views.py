@@ -109,12 +109,12 @@ def error500_internal(request, description="Sorry, something went wrong", api_cm
 
 
 def home(request):
-    return django.shortcuts.render_to_response("mini_buildd/home.html",
-                                               {"daemon": mini_buildd.daemon.get(),
-                                                "repositories": mini_buildd.models.repository.Repository.mbd_get_active_or_auto_reactivate(),
-                                                "chroots": mini_buildd.models.chroot.Chroot.mbd_get_active_or_auto_reactivate(),
-                                                "remotes": mini_buildd.models.gnupg.Remote.mbd_get_active_or_auto_reactivate()},
-                                               django.template.RequestContext(request))
+    return django.shortcuts.render(request,
+                                   "mini_buildd/home.html",
+                                   {"daemon": mini_buildd.daemon.get(),
+                                    "repositories": mini_buildd.models.repository.Repository.mbd_get_active_or_auto_reactivate(),
+                                    "chroots": mini_buildd.models.chroot.Chroot.mbd_get_active_or_auto_reactivate(),
+                                    "remotes": mini_buildd.models.gnupg.Remote.mbd_get_active_or_auto_reactivate()})
 
 
 def log(request, repository, package, version):
@@ -125,13 +125,13 @@ def log(request, repository, package, version):
                 "changes_path": pkg_log.make_relative(pkg_log.changes) if pkg_log.changes else None,
                 "buildlogs": dict((k, pkg_log.make_relative(v)) for k, v in pkg_log.buildlogs.iteritems())}
 
-    return django.shortcuts.render_to_response("mini_buildd/log.html",
-                                               {"repository": repository,
-                                                "package": package,
-                                                "version": version,
-                                                "logs": [("Installed", get_logs(installed=True)),
-                                                         ("Failed", get_logs(installed=False))]},
-                                               django.template.RequestContext(request))
+    return django.shortcuts.render(request,
+                                   "mini_buildd/log.html",
+                                   {"repository": repository,
+                                    "package": package,
+                                    "version": version,
+                                    "logs": [("Installed", get_logs(installed=True)),
+                                             ("Failed", get_logs(installed=False))]})
 
 
 def api(request):
@@ -142,10 +142,10 @@ def api(request):
 
         # Call API index if called with no argument
         if not request.GET:
-            return django.shortcuts.render_to_response("mini_buildd/api_index.html",
-                                                       {"COMMANDS": mini_buildd.api.COMMANDS_DEFAULTS,
-                                                        "COMMAND_GROUP": mini_buildd.api.COMMAND_GROUP},
-                                                       django.template.RequestContext(request))
+            return django.shortcuts.render(request,
+                                           "mini_buildd/api_index.html",
+                                           {"COMMANDS": mini_buildd.api.COMMANDS_DEFAULTS,
+                                            "COMMAND_GROUP": mini_buildd.api.COMMAND_GROUP})
 
         # Get API class from 'command' parameter
         command = request.GET.get("command", None)
@@ -179,10 +179,10 @@ def api(request):
         # Check confirmable calls
         if api_cls.CONFIRM and request.GET.get("confirm", None) != command:
             if output == "html" or output == "referer":
-                return django.shortcuts.render_to_response("mini_buildd/api_confirm.html",
-                                                           {"api_cmd": api_cmd,
-                                                            "referer": _referer(request, output)},
-                                                           django.template.RequestContext(request))
+                return django.shortcuts.render(request,
+                                               "mini_buildd/api_confirm.html",
+                                               {"api_cmd": api_cmd,
+                                                "referer": _referer(request, output)})
             else:
                 return error401_unauthorized(request, "API: '{c}': Needs to be confirmed".format(c=command))
 
@@ -195,11 +195,11 @@ def api(request):
         # Generate API call output
         response = None
         if output == "html":
-            response = django.shortcuts.render_to_response(["mini_buildd/api_{c}.html".format(c=command),
-                                                            "mini_buildd/api_default.html".format(c=command)],
-                                                           {"api_cmd": api_cmd,
-                                                            "repositories": mini_buildd.models.repository.Repository.mbd_get_prepared()},
-                                                           django.template.RequestContext(request))
+            response = django.shortcuts.render(request,
+                                               ["mini_buildd/api_{c}.html".format(c=command),
+                                                "mini_buildd/api_default.html".format(c=command)],
+                                               {"api_cmd": api_cmd,
+                                                "repositories": mini_buildd.models.repository.Repository.mbd_get_prepared()})
 
         elif output == "plain":
             response = django.http.HttpResponse(api_cmd.__unicode__().encode(mini_buildd.setup.CHAR_ENCODING),

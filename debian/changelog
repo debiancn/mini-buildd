@@ -1,3 +1,77 @@
+mini-buildd (1.0.15) unstable; urgency=medium
+
+  Code cleanup release, mainly for django 1.10 support [mini-buildd
+  is currently compatible with django 1.7 up to 1.10].
+
+  * [dcecdad] devel(installdeps): python-bs4 && python-keyrings.alt now
+    needed for developer checks.
+  * [08aa4d5] mini_buildd/[root_]urls.py: Update from deprecated syntax
+    (tested to be compatible with django 1.7,1.8,1.9 and 1.10).
+  * [f32e474] django/templates: Use 'staticfile' app, and switch to use
+    '{% static %}' in templates.
+  * [46844b6] *.css: Use relative paths to for all static image urls.
+  * [712cf2e] django_settings.py: Move all TEMPLATE related config
+    together.
+  * [2a62aac] django_settings.py: Use extra settings dict variable for
+    configure().
+  * [26644a7] django: Update template config syntax for >=1.8, and add
+    compat for 1.7.
+  * [87ebb2c] django: templates/admin/index.html: Fix leftover
+    "="-comparison (removed in 1.10).
+  * [cb993e8] django: views.py: Replace to-be-deprecated
+    "render_to_response" by "render".
+  * [add9cb3] django: templates/base.html: Fix jquery static path.
+  * [8e4d04b] django: models/base.py(action_remove): Remove unnecessary
+    "current_app" hinting (fix for p-d 1.10).
+  * [7b0fd0e] setup.py: Move "STATIC_URL" setting here, it's used for both
+    django and cherrypy.
+  * [0528861] root_urls.py: Coherently use '"' to quote strings.
+  * [7249bcc] mini-buildd: Configure logging _after_ django configure
+    (django might overwrite some global settings).
+  * [c55a9c3] Add "python warnings support": Capture via mini-buildd's
+    logging, and add '--debug=warnings' to enable all warnings.
+  * [eed76b4] doc/admin.rst: Add section/example about a console debug
+    run.
+  * [2c76a1e] django: mini_buildd_tags.py(mbd_jquery_path): Use
+    "assignment_tag" again (stay compatible with 1.7, 1.8).
+  * [a5c2cd1] django: templates: Use explicit "on_delete" for all
+    OnoToOneField and ForeignKey (RemovedInDjango20Warning).
+  * [d0b195d] [devel] run-doctest: Issue all python warnings.
+  * [b8cd7b0] cherrypy: Update to cherrypy.lib.httputil (deprecation
+    warning).
+  * [39b6075] root_urls.py: p-d-registration: Upgrade to new (non-
+    deprecated) URLs name.
+  * [e6be7e6] [devel] Remove obsoleted django-lint code (pydjangolint is
+    no more).
+  * [2721d3a] control: deps: Allow django 1.10. Thanks to Chris Lamb
+    (Closes: 828660)
+
+ -- Stephan Sürken <absurd@debian.org>  Sat, 30 Jul 2016 09:14:26 +0000
+
+mini-buildd (1.0.14) unstable; urgency=medium
+
+  * [d487423] mini-buildd.service: Some brown paper bag fixes for the new
+    service file. Thanks to Boyuan Yang (Closes: 832167)
+  * [8971737] zh_CN.po: Add translation for "Simplified Chinese". Thanks
+    to Boyuan Yang (Closes: 832168)
+  * [a90fc43] doc/admin.rst: Improve section "Logging and Debugging".
+    Thanks to Marc Haber (Closes: 820692)
+
+ -- Stephan Sürken <absurd@debian.org>  Sat, 23 Jul 2016 19:45:19 +0000
+
+mini-buildd (1.0.13) unstable; urgency=medium
+
+  * [09793e2] Add systemd unit file: mini-buildd.service.
+  * [e76bfc0] control: Adapt dependencies to new python-django epoch in
+    version. Thanks to Lucas Nussbaum (Closes: 830359)
+  * [0fa253c] example packages: Autoconf files update.
+  * [20f9301] pt_BR.po: Add translation for "Brazilian Portuguese". Thanks
+    to Adriano Rafael Gomes (Closes: 829337)
+  * [2c9ecc7] builder.py: Install gnupg explicitly before using apt-key
+    (apt no longer depends on it). Thanks to Boyuan Yang (Closes: 831749)
+
+ -- Stephan Sürken <absurd@debian.org>  Fri, 22 Jul 2016 17:20:28 +0000
+
 mini-buildd (1.0.12) unstable; urgency=medium
 
   This release focuses on HTML/design cleanups and fixes, and makes

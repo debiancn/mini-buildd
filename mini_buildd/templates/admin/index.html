@@ -1,8 +1,9 @@
 {% extends "admin/base_site.html" %}
+{% load staticfiles %}
 {% load i18n %}
 {% load mini_buildd_tags %}
 
-{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/admin/css/dashboard.css" />{% endblock %}
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/dashboard.css" %}" />{% endblock %}
 
 {% block coltype %}colMS{% endblock %}
 
@@ -27,7 +28,7 @@
 	<div id="content-main">
 		{% if app_list %}
 			{% for app in app_list %}
-				{% if app.name = "Mini_Buildd" %}
+				{% if app.name == "Mini_Buildd" %}
 					<div class="module">
 						<table>
 							<caption class="mb"><a href="{{ app.app_url }}" class="section">{% blocktrans with app.name as name %}{{ name }}{% endblocktrans %}</a></caption>

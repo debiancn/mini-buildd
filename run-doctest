@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python -W default
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 

@@ -31,6 +31,9 @@ CHAR_ENCODING = "UTF-8"
 # Compute python-version dependent install path
 PY_PACKAGE_PATH = "/usr/lib/python{major}.{minor}/dist-packages".format(major=sys.version_info[0], minor=sys.version_info[1])
 
+# Location for static web data (needed for django ('STATIC_URL') and cherrypy). This *must* have trailing '/'.
+STATIC_URL = "/static/"
+
 
 def log_exception(log, message, exception, level=logging.ERROR):
     msg = "{m}: {e}".format(m=message, e=exception)

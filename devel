@@ -54,7 +54,7 @@ mbd_installdeps()
 	mk-build-deps --install --root-cmd=sudo --remove --tool="apt-get --no-install-recommends --target-release='*'" 
 
 	# Extra tools needed for checks
-	sudo apt-get install --no-install-recommends pep8 pylint pychecker pyflakes python-apt
+	sudo apt-get install --no-install-recommends pep8 pylint pychecker pyflakes python-apt python-bs4 python-keyrings.alt
 	# Extra tools needed vc and package building
 	sudo apt-get install --no-install-recommends git git-buildpackage
 	# binary package dependecies so we can just dpkg -i for testing
@@ -184,23 +184,6 @@ mbd_pychecker()
 	)
 }
 
-mbd_pydjangolint()
-{
-	_check_prog django-lint
-	(
-		pyenv
-		! django-lint mini_buildd/ | grep --invert-match \
-			-e "is actually a directory; consider splitting application" \
-			-e "BooleanField with default=True will not be reflected in database" \
-			-e "Naive tree structure implementation using ForeignKey('self')" \
-			-e "ForeignKey missing related_name" \
-			-e "URLField uses verify_exists=True default" \
-			-e "Model has too many field" \
-			-e "Bad option value" \
-			-e "^\*"
-	)
-}
-
 mbd_css()
 {
 	local class errors=0 ignoreRegex="mbd-action-.*"
@@ -222,7 +205,6 @@ mbd_css()
 
 mbd_check()
 {
-	# 2014 Feb: 'pydjangolint' removed: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=735199
 	local tests="pep8 pymisc pydoctests pyflakes pylint css"
 	for t in ${tests}; do
 		printf "=> mbd_${t}\n"

@@ -9,7 +9,7 @@ import logging
 
 import cherrypy
 import cherrypy.lib.cptools
-import cherrypy.lib.http
+import cherrypy.lib.httputil
 import cherrypy.lib.static
 
 import mini_buildd.misc
@@ -111,7 +111,7 @@ class StaticWithIndex(cherrypy._cptools.HandlerTool):  # pylint: disable=protect
 
             # Set last modified, and call validate_since
             # This may return a "304 Not Modified" in case the client did a condition GET
-            cherrypy.response.headers["Last-Modified"] = cherrypy.lib.http.HTTPDate(path_stat.st_mtime)
+            cherrypy.response.headers["Last-Modified"] = cherrypy.lib.httputil.HTTPDate(path_stat.st_mtime)
             cherrypy.lib.cptools.validate_since()
 
             # Check for trailing "/" (without, browser will use wrong URLs for entries)
@@ -189,25 +189,26 @@ def run(bind, wsgi_app):
     cherrypy.log.access_log.addHandler(handler)
 
     # Serve mini_buildd webapp's static directory
-    add_static_handler("/static",
+    add_static_handler(mini_buildd.setup.STATIC_URL,
                        "{p}/mini_buildd/static".format(p=mini_buildd.setup.PY_PACKAGE_PATH))
 
-    # Serve django admin webapp's static directory
-    add_static_handler("/static/admin",
+    # Serve django admin webapp's static directory.
+    # Note: 'STATIC_URL' has trailing "/"; cherrypy does not like double slashes inside path like add_static_handler("/my//path").
+    add_static_handler("{p}admin/".format(p=mini_buildd.setup.STATIC_URL),
                        "{p}/django/contrib/admin/static/admin".format(p=mini_buildd.setup.PY_PACKAGE_PATH))
 
     # Serve mini-buildd's HTML manual
-    add_static_handler("/doc",
+    add_static_handler("/doc/",
                        "/usr/share/doc/mini-buildd/html")
 
     # Serve repositories with index support
-    add_static_handler("/repositories",
+    add_static_handler("/repositories/",
                        mini_buildd.setup.REPOSITORIES_DIR,
                        with_index=True,
                        match=r"^/.+/(pool|dists)/.*")
 
     # Serve logs with index support
-    add_static_handler("/log",
+    add_static_handler("/log/",
                        mini_buildd.setup.LOG_DIR,
                        with_index=True,
                        match=r"^/.+/.*")

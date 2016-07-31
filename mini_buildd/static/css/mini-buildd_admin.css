@@ -18,7 +18,7 @@
 {
 	float: left;
 	width: 100%;
-	background: url("/static/img/mbd_message_warning.png") no-repeat scroll 0 0px white;
+	background: url("../img/mbd_message_warning.png") no-repeat scroll 0 0px white;
 	border-bottom: 1px solid #cccccc;
 	border-top: 1px solid #cccccc;
 	color: #999999;
@@ -51,7 +51,7 @@
 
 #header
 {
-	background: url("/static/img/da_header_background_gradient.png") repeat-x scroll left top;
+	background: url("../img/da_header_background_gradient.png") repeat-x scroll left top;
 }
 
 #content-main td.right
@@ -67,7 +67,7 @@
 
 #content-main a.mbd-wizard
 {
-	background: url("/static/img/mbd_wizard.png") no-repeat scroll 3px 50%;
+	background: url("../img/mbd_wizard.png") no-repeat scroll 3px 50%;
 	margin: 0px 0px 0px 0px;
 	padding: 2px 6px 2px 30px;
 	text-decoration: none;

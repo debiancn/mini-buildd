@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 import os
 import logging
 import random
+from distutils.version import LooseVersion
 
 import django
 import django.conf
@@ -19,6 +20,7 @@ MBD_INSTALLED_APPS = (
     "django.contrib.admin",
     "django.contrib.sessions",
     "django.contrib.admindocs",
+    "django.contrib.staticfiles",
     "registration",
     "mini_buildd")
 
@@ -85,44 +87,77 @@ def configure(smtp_string, loglevel):
 
     smtp = SMTPCreds(smtp_string)
     debug = "webapp" in mini_buildd.setup.DEBUG
-    django.conf.settings.configure(
-        DEBUG=debug,
-        TEMPLATE_DEBUG=debug,
-        MESSAGE_LEVEL=mini_buildd.models.msglog.MsgLog.level2django(loglevel),
 
-        ALLOWED_HOSTS=["*"],
+    settings = {
+        "DEBUG": debug,
+        "MESSAGE_LEVEL": mini_buildd.models.msglog.MsgLog.level2django(loglevel),
 
-        EMAIL_HOST=smtp.host,
-        EMAIL_PORT=smtp.port,
-        EMAIL_USE_TLS=smtp.protocol == "ssmtp",
-        EMAIL_HOST_USER=smtp.user,
-        EMAIL_HOST_PASSWORD=smtp.password,
+        "ALLOWED_HOSTS": ["*"],
 
-        TEMPLATE_DIRS=["{p}/mini_buildd/templates".format(p=mini_buildd.setup.PY_PACKAGE_PATH)],
-        TEMPLATE_LOADERS=(
-            "django.template.loaders.filesystem.Loader",
-            "django.template.loaders.app_directories.Loader"),
+        "EMAIL_HOST": smtp.host,
+        "EMAIL_PORT": smtp.port,
+        "EMAIL_USE_TLS": smtp.protocol == "ssmtp",
+        "EMAIL_HOST_USER": smtp.user,
+        "EMAIL_HOST_PASSWORD": smtp.password,
 
-        DATABASES={"default": {"ENGINE": "django.db.backends.sqlite3",
-                               "NAME": os.path.join(mini_buildd.setup.HOME_DIR, "config.sqlite")}},
+        "DATABASES": {"default": {"ENGINE": "django.db.backends.sqlite3",
+                                  "NAME": os.path.join(mini_buildd.setup.HOME_DIR, "config.sqlite")}},
 
-        TIME_ZONE=None,
-        USE_L10N=True,
-        SECRET_KEY=get_django_secret_key(mini_buildd.setup.HOME_DIR),
-        ROOT_URLCONF="mini_buildd.root_urls",
-        STATIC_URL="/static/",
-        ACCOUNT_ACTIVATION_DAYS=3,
-        LOGIN_REDIRECT_URL="/mini_buildd/",
+        "TIME_ZONE": None,
+        "USE_L10N": True,
+        "SECRET_KEY": get_django_secret_key(mini_buildd.setup.HOME_DIR),
+        "ROOT_URLCONF": "mini_buildd.root_urls",
+        "STATIC_URL": mini_buildd.setup.STATIC_URL,
+        "ACCOUNT_ACTIVATION_DAYS": 3,
+        "LOGIN_REDIRECT_URL": "/mini_buildd/",
 
-        MIDDLEWARE_CLASSES=(
+        "MIDDLEWARE_CLASSES": (
             "django.middleware.common.CommonMiddleware",
             "django.contrib.sessions.middleware.SessionMiddleware",
             "django.middleware.csrf.CsrfViewMiddleware",
             "django.contrib.auth.middleware.AuthenticationMiddleware",
             "django.contrib.messages.middleware.MessageMiddleware"),
 
-        INSTALLED_APPS=MBD_INSTALLED_APPS)
+        "INSTALLED_APPS": MBD_INSTALLED_APPS
+    }
 
+    if LooseVersion(django.get_version()) < LooseVersion("1.8"):
+        # Django <= 1.7 compat: TEMPLATE settings
+        settings.update({
+            "TEMPLATE_DEBUG": debug,
+            "TEMPLATE_DIRS": ["{p}/mini_buildd/templates".format(p=mini_buildd.setup.PY_PACKAGE_PATH)],
+            "TEMPLATE_LOADERS": (
+                "django.template.loaders.filesystem.Loader",
+                "django.template.loaders.app_directories.Loader"),
+        })
+    else:
+        settings.update({
+            "TEMPLATES": [
+                {
+                    'BACKEND': 'django.template.backends.django.DjangoTemplates',
+                    'DIRS': [
+                        "{p}/mini_buildd/templates".format(p=mini_buildd.setup.PY_PACKAGE_PATH)
+                    ],
+                    'APP_DIRS': True,
+                    'OPTIONS': {
+                        'debug': debug,
+                        'context_processors': [
+                            # Insert your TEMPLATE_CONTEXT_PROCESSORS here or use this
+                            # list if you haven't customized them:
+                            'django.contrib.auth.context_processors.auth',
+                            'django.template.context_processors.debug',
+                            'django.template.context_processors.i18n',
+                            'django.template.context_processors.media',
+                            'django.template.context_processors.static',
+                            'django.template.context_processors.tz',
+                            'django.contrib.messages.context_processors.messages',
+                        ],
+                    },
+                },
+            ],
+        })
+
+    django.conf.settings.configure(**settings)
     django.setup()
 
 

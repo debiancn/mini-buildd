@@ -17,24 +17,24 @@ ul.messagelist li
 
 ul.messagelist li.debug
 {
-	background: #ffc url(/static/img/mbd_message_debug.png) 5px .3em no-repeat;
+	background: #ffc url(../img/mbd_message_debug.png) 5px .3em no-repeat;
 	color: blue;
 }
 
 ul.messagelist li.info
 {
-	background: #ffc url(/static/img/mbd_message_info.png) 5px .3em no-repeat;
+	background: #ffc url(../img/mbd_message_info.png) 5px .3em no-repeat;
 	color: green;
 }
 
 ul.messagelist li.warning
 {
-	background: #ffc url(/static/img/mbd_message_warning.png) 5px .3em no-repeat;
+	background: #ffc url(../img/mbd_message_warning.png) 5px .3em no-repeat;
 	color: purple;
 }
 
 ul.messagelist li.error
 {
-	background: #ffc url(/static/img/mbd_message_error.png) 5px .3em no-repeat;
+	background: #ffc url(../img/mbd_message_error.png) 5px .3em no-repeat;
 	color: red;
 }

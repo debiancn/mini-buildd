@@ -132,7 +132,8 @@ class KeyringKey(GnuPGPublicKey):
 
 
 class Uploader(KeyringKey):
-    user = django.db.models.OneToOneField(django.contrib.auth.models.User)
+    user = django.db.models.OneToOneField(django.contrib.auth.models.User,
+                                          on_delete=django.db.models.CASCADE)
     may_upload_to = django.db.models.ManyToManyField("Repository", blank=True)
 
     class Admin(KeyringKey.Admin):

@@ -179,6 +179,8 @@ $apt_allow_unauthenticated = {apt_allow_unauthenticated};
                        "--chroot-setup-command=cat /etc/apt/sources.list",
                        "--chroot-setup-command=cp {p}/apt_preferences /etc/apt/preferences".format(p=self._build_dir),
                        "--chroot-setup-command=cat /etc/apt/preferences",
+                       # We use apt-key explicitly here, so we need gnupg. https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=831749
+                       "--chroot-setup-command=apt-get --yes --option=APT::Install-Recommends=false install gnupg",
                        "--chroot-setup-command=apt-key add {p}/apt_keys".format(p=self._build_dir),
                        "--chroot-setup-command=apt-get --option=Acquire::Languages=none update",
                        "--chroot-setup-command={p}/chroot_setup_script".format(p=self._build_dir),

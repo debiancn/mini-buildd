@@ -1,23 +1,27 @@
+{% load staticfiles %}
 {% load mini_buildd_tags %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<link rel="shortcut icon" href="/static/favicon.ico" />
-		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/css/mini-buildd.css" />
-		<script src="{{ STATIC_URL }}{% mbd_jquery_path %}" type="text/javascript"></script>
+		<link rel="shortcut icon" href="{% static "favicon.ico" %}" />
+		<link rel="stylesheet" type="text/css" href="{% static "css/mini-buildd.css" %}"/>
+
+		{% mbd_jquery_path as jquery_path %}
+		<script src="{% static jquery_path %}" type="text/javascript"></script>
+
 		<script type="text/javascript">
 			{% block localscript %}{% endblock %}
 		</script>
-		<script type="text/javascript" src="/static/js/mini-buildd.js"></script>
+		<script type="text/javascript" src="{% static "js/mini-buildd.js" %}"></script>
 		<title>{% block title %}mini-buildd{% endblock %}: {% block page_title %}{% endblock %}</title>
 	</head>
 	<body>
 		<!-- Header -->
 		<div id="mbd-header">
 			<div id="mbd-branding">
-				<a class="image" title="mini-buildd Home" href="/"><img src="/static/img/icon_48x48.png" alt="mini-buildd logo" /></a>
+				<a class="image" title="mini-buildd Home" href="/"><img src="{% static "img/icon_48x48.png" %}" alt="mini-buildd logo" /></a>
 			</div>
 			<div id="mbd-navigation">
 				<ul class="left">

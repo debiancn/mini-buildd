@@ -1,0 +1,13 @@
+[Unit]
+Description=custom Debian build daemon
+Documentation=man:mini-buildd(8)
+After=remote-fs.target
+
+[Service]
+EnvironmentFile=-/etc/default/mini-buildd
+User=mini-buildd
+ExecStart=/usr/sbin/mini-buildd $MINI_BUILDD_OPTIONS
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

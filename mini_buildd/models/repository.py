@@ -60,8 +60,10 @@ class Suite(mini_buildd.models.base.Model):
 
 
 class SuiteOption(mini_buildd.models.base.Model):
-    layout = django.db.models.ForeignKey("Layout")
-    suite = django.db.models.ForeignKey("Suite")
+    layout = django.db.models.ForeignKey("Layout",
+                                         on_delete=django.db.models.CASCADE)
+    suite = django.db.models.ForeignKey("Suite",
+                                        on_delete=django.db.models.CASCADE)
 
     uploadable = django.db.models.BooleanField(
         default=True,
@@ -77,6 +79,7 @@ lintian) as non-lethal, and will install anyway.
 
     migrates_to = django.db.models.ForeignKey(
         "self", blank=True, null=True,
+        on_delete=django.db.models.CASCADE,
         help_text="Give another suite where packages may migrate to (you may need to save this 'blank' first before you see choices here).")
 
     build_keyring_package = django.db.models.BooleanField(
@@ -323,8 +326,10 @@ packages (to unstable,experimental,..) aimed for Debian.
 
 
 class ArchitectureOption(mini_buildd.models.base.Model):
-    architecture = django.db.models.ForeignKey("Architecture")
-    distribution = django.db.models.ForeignKey("Distribution")
+    architecture = django.db.models.ForeignKey("Architecture",
+                                               on_delete=django.db.models.CASCADE)
+    distribution = django.db.models.ForeignKey("Distribution",
+                                               on_delete=django.db.models.CASCADE)
 
     optional = django.db.models.BooleanField(
         default=False,
@@ -353,7 +358,8 @@ class ArchitectureOptionInline(django.contrib.admin.TabularInline):
 
 
 class Distribution(mini_buildd.models.base.Model):
-    base_source = django.db.models.ForeignKey(mini_buildd.models.source.Source)
+    base_source = django.db.models.ForeignKey(mini_buildd.models.source.Source,
+                                              on_delete=django.db.models.CASCADE)
     extra_sources = django.db.models.ManyToManyField(mini_buildd.models.source.PrioritySource, blank=True)
     components = django.db.models.ManyToManyField(mini_buildd.models.source.Component)
 
@@ -636,7 +642,8 @@ plays the same role as the well-known 'bpo' version string from
 Debian backports.
 """)
 
-    layout = django.db.models.ForeignKey(Layout)
+    layout = django.db.models.ForeignKey(Layout,
+                                         on_delete=django.db.models.CASCADE)
     distributions = django.db.models.ManyToManyField(Distribution)
 
     allow_unauthenticated_uploads = django.db.models.BooleanField(default=False,

@@ -8,7 +8,8 @@ import mini_buildd.models.base
 
 
 class Subscription(mini_buildd.models.base.Model):
-    subscriber = django.db.models.ForeignKey(django.contrib.auth.models.User)
+    subscriber = django.db.models.ForeignKey(django.contrib.auth.models.User,
+                                             on_delete=django.db.models.CASCADE)
     package = django.db.models.CharField(max_length=100, blank=True)
     distribution = django.db.models.CharField(max_length=100, blank=True)
 
