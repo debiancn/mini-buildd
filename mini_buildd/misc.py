@@ -770,6 +770,15 @@ Save password for '{k}': (Y)es, (N)o, (A)lways, Ne(v)er? """.format(c=self, k=ke
         return key, user, password, new
 
 
+def urlopen_ca_certificates(url):
+    """
+    Wrapper for urlib2.urlopen, optionally using certificates from ca-certificates package, when installed.
+    (See https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=832350).
+    """
+    cafile = "/etc/ssl/certs/ca-certificates.crt"
+    return urllib2.urlopen(url, cafile=cafile) if os.path.exists(cafile) else urllib2.urlopen(url)
+
+
 def canonize_url(url):
     "Poor man's URL canonizer: Always include the port (currently only works for 'http' and 'https' default ports)."
     default_scheme2port = {"http": ":80", "https": ":443"}

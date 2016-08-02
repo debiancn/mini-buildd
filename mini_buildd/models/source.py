@@ -99,7 +99,7 @@ Use the 'directory' notation with exactly one trailing slash (like 'http://examp
         with tempfile.NamedTemporaryFile() as release_file:
             MsgLog(LOG, request).debug("Downloading '{u}' to '{t}'".format(u=url, t=release_file.name))
             try:
-                release_file.write(urllib2.urlopen(url).read())
+                release_file.write(mini_buildd.misc.urlopen_ca_certificates(url).read())
             except urllib2.HTTPError as e:
                 if e.code == 404:
                     MsgLog(LOG, request).debug("{a}: '404 Not Found' on '{u}'".format(a=self, u=url))
@@ -117,7 +117,7 @@ Use the 'directory' notation with exactly one trailing slash (like 'http://examp
             # Check signature
             with tempfile.NamedTemporaryFile() as signature:
                 MsgLog(LOG, request).debug("Downloading '{u}.gpg' to '{t}'".format(u=url, t=signature.name))
-                signature.write(urllib2.urlopen(url + ".gpg").read())
+                signature.write(mini_buildd.misc.urlopen_ca_certificates(url + ".gpg").read())
                 signature.flush()
                 gnupg.verify(signature.name, release_file.name)
 
@@ -132,7 +132,7 @@ Use the 'directory' notation with exactly one trailing slash (like 'http://examp
             # just fine, but not allow to access to base URL
             # (like ourselves ;). Any archive _must_ have dists/ anyway.
             try:
-                urllib2.urlopen("{u}/dists/".format(u=self.url))
+                mini_buildd.misc.urlopen_ca_certificates("{u}/dists/".format(u=self.url))
             except urllib2.HTTPError as e:
                 # Allow HTTP 4xx client errors through; these might be valid use cases like:
                 # 404 Usage Information: apt-cacher-ng
@@ -363,6 +363,11 @@ codeversion is only used for base sources.""")
             cls._mbd_get_or_create(msglog, "Ubuntu", "wily-backports",
                                    ["40976EAF437D05B5", "3B4FE6ACC0B21F32"],
                                    "Codename: wily\nSuite: wily-backports")
+            cls._mbd_get_or_create(msglog, "Ubuntu", "xenial",
+                                   ["40976EAF437D05B5", "3B4FE6ACC0B21F32"])
+            cls._mbd_get_or_create(msglog, "Ubuntu", "xenial-backports",
+                                   ["40976EAF437D05B5", "3B4FE6ACC0B21F32"],
+                                   "Codename: xenial\nSuite: xenial-backports")
 
         @classmethod
         def mbd_filter_active_base_sources(cls):

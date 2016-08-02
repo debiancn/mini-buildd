@@ -1,3 +1,13 @@
+mini-buildd (1.0.16) unstable; urgency=medium
+
+  * [9614fc9] wizards: Add support for Ubuntu "xenial".
+  * [dbe0307] control: b-d: Add gnupg (build needs it for automatic tests)
+    (Fixes FTBFS in reproducible build chroots).
+  * [78c157d] models/source.py: Use ca-certificates if installed when
+    checking sources. Thanks to Klee Dienes (Closes: 832350)
+
+ -- Stephan Sürken <absurd@debian.org>  Sun, 31 Jul 2016 08:57:07 +0000
+
 mini-buildd (1.0.15) unstable; urgency=medium
 
   Code cleanup release, mainly for django 1.10 support [mini-buildd
